@@ -5,14 +5,14 @@ services:
   nanoserver:
     image: docker4dotnet/nanoserver
     build:
-      context: nanoserver
+      context: windows/nanoserver
 
   servercore:
     image: docker4dotnet/servercore
     build:
-      context: servercore
+      context: windows/servercore
 
   sql-server:
     image: docker4dotnet/sql-server:2017
     build:
-      context: sql-server
+      context: windows/sql-server

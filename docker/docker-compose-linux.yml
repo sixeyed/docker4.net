@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  alpine:
+    image: docker4dotnet/alpine
+    build:
+      context: linux/alpine
+
+  mssql:
+    image: docker4dotnet/mssql
+    build:
+      context: linux/mssql
+
+  ubuntu:
+    image: docker4dotnet/ubuntu
+    build:
+      context: linux/ubuntu
