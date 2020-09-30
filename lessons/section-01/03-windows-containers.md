@@ -25,7 +25,7 @@ docker version
 
 Task containers just do one thing and then exit. Useful for automation, but we'll start with a simple example.
 
-_Print out the host name from a Windows container:_
+_Print out the host name from a Windows Nano Server container:_
 
 ```
 docker container run docker4dotnet/nanoserver hostname
