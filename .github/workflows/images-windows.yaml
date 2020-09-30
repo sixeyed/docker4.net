@@ -1,0 +1,28 @@
+name: Windows image build
+
+on:
+  push:
+    paths:
+      - ".github/**"
+      - "docker/**"
+      - "src/**"
+  schedule:
+    - cron: "0 0-7 * * *"
+
+# TODO - check if this is still the case:
+# split into multiple builds, otherwise the runner runs out of disk space...
+# and docker-compose push fails with exitcode 1, so push manually
+jobs:
+  build-base:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@master
+      - name: Build and push base images
+        working-directory: docker
+        run: |
+          docker login -u $env:USER -p $env:TOKEN
+          docker-compose -f docker-compose-windows.yml build 
+          docker-compose -f docker-compose-windows.yml push
+        env:
+          USER: ${{ secrets.DOCKER_HUB_USERNAME }}
+          TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}

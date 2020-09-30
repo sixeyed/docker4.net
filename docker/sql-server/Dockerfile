@@ -1,0 +1,1 @@
+FROM dak4dotnet/sql-server:2017
