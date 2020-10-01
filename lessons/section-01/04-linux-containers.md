@@ -1,4 +1,4 @@
-# Linux Container Basics
+  # Linux Container Basics
 
 Linux containers work in the same way as Windows containers - the Docker commands are the same and the workflow is the same.
 
@@ -244,6 +244,6 @@ docker container rm --force `
 
 Linux and Windows containers have almost identical feature sets and Docker Desktop makes it very easy to switch between them.
 
-But remember than Linux containers run on a Linux OS and Windows containers on a Windows OS. Windows Server machines can run Windows containers but not Linux containers.
+But remember than Linux containers run on a Linux OS and Windows containers on a Windows OS. Windows Server machines can run Windows containers but not Linux containers - and Linux server machines can only run Linux containers.
 
 So far we've used images which I've built for this section. Next you'll learn how to build your own images.

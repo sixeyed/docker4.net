@@ -2,6 +2,11 @@ version: '3.7'
 
 services:
 
+  aspnet:
+    image: docker4dotnet/aspnet:4.8
+    build:
+      context: windows/aspnet
+
   nanoserver:
     image: docker4dotnet/nanoserver
     build:
