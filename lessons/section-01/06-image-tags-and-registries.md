@@ -194,7 +194,7 @@ Docker shares layers between images, so every image that uses Windows Server Cor
 
 ## That's it for the 101
 
-You have a good understanding of the Docker basics now: Dockerfiles, images, containers and .
+You have a good understanding of the Docker basics now: Dockerfiles, images, containers and registries.
 
 That's really all you need to get started Dockerizing your own applications.
 
