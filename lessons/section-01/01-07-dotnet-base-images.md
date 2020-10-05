@@ -1,6 +1,6 @@
 # .NET Base Images
 
----
+
 
 The base image is the image you use in the `FROM` line in your Dockerfile. It was built with a Dockerfile and it comes packaged with software:
 
@@ -10,7 +10,7 @@ The base image is the image you use in the `FROM` line in your Dockerfile. It wa
 
 Microsoft maintain Docker images for the .NET stack on their own registry, `mcr.microsoft.com`.
 
----
+
 
 ## Try a .NET Core image
 
@@ -26,7 +26,7 @@ docker image ls mcr.microsoft.com/dotnet/core/runtime:*
 
 > The runtime image is used to run non-web apps.
 
----
+
 
 ## Run a .NET Core container on Linux
 
@@ -40,7 +40,7 @@ docker run mcr.microsoft.com/dotnet/core/runtime:3.1 dotnet --list-runtimes
 
 > .NET Core uses semantic versioning. You'll see the latest patch version of the LTS 3.1 branch.
 
----
+
 
 ## Try a container with the .NET Core SDK
 
@@ -54,7 +54,7 @@ docker run mcr.microsoft.com/dotnet/core/sdk:3.1 dotnet --list-sdks
 
 > The SDK image contains all the build tools.
 
----
+
 
 ## And one more runtime image
 
@@ -70,7 +70,7 @@ docker run mcr.microsoft.com/dotnet/core/aspnet:3.1 dotnet --list-runtimes
 
 > The ASP.NET Core image contains the basic runtime and the ASP.NET runtime.
 
----
+
 
 ## Compare the images
 
@@ -84,7 +84,7 @@ docker image ls mcr.microsoft.com/dotnet/core/*:3.1
 
 > The ASP.NET image is about 20MB bigger than the runtime image, and the SDK image is 3.5x the size of the ASP.NET image. They're taking up storage space on your machine, but we'll be using them all in the course.
 
----
+
 
 ## Pull the Windows versions of the .NET Core images
 
@@ -102,7 +102,7 @@ docker pull mcr.microsoft.com/dotnet/core/sdk:3.1
 
 > Using the same names is confusing now, but it makes things very flexible for your own apps - we'll see that in the next section.
 
----
+
 
 ## Check the Windows image sizes
 
@@ -118,7 +118,7 @@ docker image ls mcr.microsoft.com/dotnet/core/*:3.1
 
 > Each image is about 100MB bigger than it's Linux counterpart.
 
----
+
 
 ## Choosing between .NET Core and .NET Framework images
 
@@ -128,7 +128,7 @@ Older apps built with the .NET Framework can be packaged to run in Docker contai
 
 Microsoft provide base images for .NET 4.8 and 3.5, so you can migrate older apps to containers with no code changes.
 
----
+
 
 ## Pull the .NET Framework 4.8 images
 
@@ -144,7 +144,7 @@ docker pull mcr.microsoft.com/dotnet/framework/sdk:4.8
 
 > They use the same naming standard, but there are only Windows versions of these images.
 
----
+
 
 ## Try the tools in the SDK image
 
@@ -156,7 +156,7 @@ _Check the versions of the tools:_
 docker run mcr.microsoft.com/dotnet/framework/sdk:4.8 msbuild -version
 ```
 
----
+
 
 ## And run a default ASP.NET website
 
@@ -174,7 +174,7 @@ docker exec aspnet powershell "ls /inetpub/wwroot"
 
 > Browse to http://localhost:8080 and you'll see an error because there's no content and directory browsing is turned off.
 
----
+
 
 ## The .NET images are listed on Docker Hub
 
@@ -187,7 +187,7 @@ You'll use Docker Hub to find the Microsoft images, where you'll see all the tag
 
 > Here's where you'll find all the tag aliases too. For the .NET Core runtime `3.1` is an alias for `3.1.8-buster-slim` on Linux, and for `3.1.8-nanoserver-1809` on Windows.
 
----
+
 
 ## And the Dockerfiles are on GitHub
 
@@ -198,7 +198,7 @@ All of Microsoft's Docker Hub images are open source, with the Dockerfiles on Gi
 
 New images are typically published every month to include the latest OS patch updates, in addition to the release schedule of the runtime.
 
----
+
 
 ## That's all the practical work
 

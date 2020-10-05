@@ -4,7 +4,7 @@ Linux containers work in the same way as Windows containers - the Docker command
 
 Under the hood the container runs Linux on a Linux OS. Docker Desktop takes care of managing the Linux OS for you on Windows. It uses Hyper-V or WSL and takes care of wiring everything up.
 
----
+
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ docker version
 
 > You should see Linux for the server this time - the client is still Windows.
 
----
+
 
 ## Run a task in a container
 
@@ -32,7 +32,7 @@ docker container run docker4dotnet/alpine hostname
 
 > Some commands are the same in Linux and Windows.
 
----
+
 
 ## Check for running containers
 
@@ -46,7 +46,7 @@ docker container ls --all
 
 > Just like before, the container ID is the container's hostname. If you had Windows containers running you wouldn't see them in the list - the command line is connecting to the Linux server.
 
----
+
 
 ## Run an interactive container
 
@@ -61,7 +61,7 @@ docker run --interactive --tty --rm `
 
 > `docker run` is the short form of `docker container run` - both are supported on Linux and Windows.
 
----
+
 
 ## Explore Ubuntu
 
@@ -78,7 +78,7 @@ curl https://docker4.net
 
 > Now run `exit` to leave the Bash session, which stops the container process.
 
----
+
 
 ## Run a background SQL container
 
@@ -94,7 +94,7 @@ docker container run --detach --name sql `
 
 > You don't need to specify isolation for Linux containers - they always work with process isolation.
 
----
+
 
 ## Exploring SQL Server
 
@@ -114,7 +114,7 @@ docker logs sql
 
 > `top` and `logs` can also be used without the `container` prefix
 
----
+
 
 ## Running SQL commands
 
@@ -129,7 +129,7 @@ docker exec sql `
 
 > Same with `exec`
 
----
+
 
 ## Connect to a background container
 
@@ -141,7 +141,7 @@ _Connect a Bash session to the container_:
 docker container exec -it sql bash
 ```
 
----
+
 
 ## Explore the SQL filesystem
 
@@ -157,7 +157,7 @@ cd /var/opt/mssql
 ls ./data
 ```
 
----
+
 
 ## Processes in the SQL container
 
@@ -177,7 +177,7 @@ ps x
 
 > There are two `sqlservr` processes running. One is started when the container starts and it spawns the second.
 
----
+
 
 ## Linux users in the SQL container
 
@@ -191,7 +191,7 @@ ps ux
 
 > Everything is running as `root`.
 
----
+
 
 ## Those processes are root on the host too
 
@@ -203,7 +203,7 @@ If you run Docker directly on a Linux machine you can list the processes on the 
 
 > This is a security issue which needs to be managed in production.
 
----
+
 
 ## Comparing Linux and Windows containers
 
@@ -213,7 +213,7 @@ If you run Docker directly on a Linux machine you can list the processes on the 
 
 - The user experience for Linux and Windows containers is the same - it's the same Docker commands
 
----
+
 
 ## Disconnect from the container
 
@@ -225,7 +225,7 @@ exit
 
 > The container is still running - check with `docker ps`
 
----
+
 
 ## Clean up all containers
 
@@ -238,7 +238,7 @@ docker container rm --force `
   $(docker container ls --quiet --all)
 ```
 
----
+
 
 ## That's the basics
 

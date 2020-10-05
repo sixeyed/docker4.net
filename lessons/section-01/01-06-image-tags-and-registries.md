@@ -1,6 +1,6 @@
 # Docker Images, Tags and Registries
 
----
+
 
 Images are the portable package that contains your application - your binaries, all the dependencies and the default configuration.
 
@@ -10,7 +10,7 @@ You share images by pushing them to a registry. [Docker Hub](https://hub.docker.
 
 You work with all registries in the same way.
 
----
+
 
 ## Registry username
 
@@ -24,7 +24,7 @@ $env:dockerId='<insert-your-docker-id-here>'
 
 > Make sure you use your Docker ID, which is the username you use on Docker Hub, not your email address. Mine is `sixeyed`, so I run `$env:dockerId='sixeyed'`
 
----
+
 
 ## Image tags
 
@@ -36,7 +36,7 @@ _Add a new tag for your tweet image which includes your Docker ID:_
 docker image tag tweet-app "$env:dockerId/tweet-app"
 ```
 
----
+
 
 ## List your images
 
@@ -52,7 +52,7 @@ docker image ls "$env:dockerId/tweet-app"
 
 > They have the same image ID - they're two tags for the same image. You can push image tags with your Docker ID to Docker Hub.
 
----
+
 
 ## Login to Docker Hub
 
@@ -66,7 +66,7 @@ docker login --username "$env:dockerId"
 
 > You have access to your own user image repositories on Docker Hub, and you can also be granted access to organization repositories.
 
----
+
 
 ## Push images to Docker Hub
 
@@ -80,7 +80,7 @@ docker image push $env:dockerId/tweet-app
 
 > You'll see the upload progress for each layer in the Docker image.
 
----
+
 
 ## Browse to Docker Hub
 
@@ -97,7 +97,7 @@ Docker Hub shows some basic information about the image:
 
 > This is a public image, so anyone can run containers from it - and the app will work in exactly the same way everywhere.
 
----
+
 
 ## How about Linux images?
 
@@ -114,7 +114,7 @@ docker image ls "$env:dockerId/tweet-app"
 
 > You only see the Linux version which doesn't have your Docker username.
 
----
+
 
 ## Tag the Linux image
 
@@ -126,7 +126,7 @@ _Add a new tag with your Hub username:_
 docker image tag tweet-app:linux "$env:dockerId/tweet-app:linux"
 ```
 
----
+
 
 ## Push the Linux image
 
@@ -138,7 +138,7 @@ _Push the Linux image:_
 docker push "$env:dockerId/tweet-app:linux"
 ```
 
----
+
 
 ## Check on Docker Hub
 
@@ -166,7 +166,7 @@ docker build -t "$env:dockerId/tweet-app:v2-linux" .
 
 > You can use any versioning scheme you like in the image tag. Semantic versioning is popular, together with an OS identifier - e.g. `nginx:1.18.0-alpine`
 
----
+
 
 ## Push a new version of the app
 
@@ -180,7 +180,7 @@ docker image push "$env:dockerId/tweet-app:v2-linux"
 
 > Refresh the tags page of your Docker Hub repo, you'll see three tags listed.
 
----
+
 
 ## What exactly gets uploaded?
 
@@ -190,7 +190,7 @@ Those layers are already known by Docker Hub, so they don't get uploaded - only 
 
 Docker shares layers between images, so every image that uses Windows Server Core will share the cached layers for that image.
 
----
+
 
 ## That's it for the 101
 

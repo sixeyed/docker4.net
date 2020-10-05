@@ -5,7 +5,7 @@ We'll start with the basics and get a feel for running Docker on Windows.
 
 You'll see how to run task containers, interactive containers and background containers, and explore the filesystem and processes inside Docker containers.
 
----
+
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ docker version
 
 > You should see Windows for both. Now we can get started!
 
----
+
 
 ## Run a task in a container
 
@@ -31,7 +31,7 @@ _Print out the host name from a Windows Nano Server container:_
 docker container run docker4dotnet/nanoserver hostname
 ```
 
----
+
 
 ## Check for running containers
 
@@ -45,7 +45,7 @@ docker container ls --all
 
 > The container ID _is_ the container's hostname.
 
----
+
 
 ## Run an interactive container
 
@@ -58,7 +58,7 @@ docker container run --interactive --tty --rm `
   docker4dotnet/servercore powershell
 ```
 
----
+
 
 ## Explore Windows Server Core
 
@@ -74,7 +74,7 @@ Get-WindowsFeature
 
 > Now run `exit` to leave the PowerShell session, which stops the container process.
 
----
+
 
 ## Run a background SQL container
 
@@ -90,7 +90,7 @@ docker container run --detach --name sql `
 
 > Process isolation means the Windows 10 container behaves like a Windows Server container, and the container processes run directly on the machine.
 
----
+
 
 ## Exploring SQL Server
 
@@ -108,7 +108,7 @@ docker container top sql
 docker container logs sql
 ```
 
----
+
 
 ## Running SQL commands
 
@@ -123,7 +123,7 @@ docker container exec sql `
   powershell "Invoke-SqlCmd -Query 'SELECT GETDATE()'"
 ```
 
----
+
 
 ## Connect to a background container
 
@@ -135,7 +135,7 @@ _Connect a PowerShell session to the container_:
 docker container exec -it sql powershell
 ```
 
----
+
 
 ## Explore the SQL filesystem
 
@@ -151,7 +151,7 @@ cd 'C:\Program Files\Microsoft SQL Server'
 ls .\MSSQL14.SQLEXPRESS\MSSQL\data
 ```
 
----
+
 
 ## Processes in the SQL container
 
@@ -165,7 +165,7 @@ Get-Process
 
 > One is `sqlservr`. There are also `powershell` processes, one is the container startup script and the other is this PowerShell session.
 
----
+
 
 ## Windows users in the SQL container
 
@@ -179,7 +179,7 @@ Get-Process -Name sqlservr,powershell -IncludeUser
 
 > Containers have the usual Windows accounts, and a special administrator user - run `whoami` to see that.
 
----
+
 
 ## Check processes on the Windows host
 
@@ -193,7 +193,7 @@ Get-Process -Name powershell -IncludeUserName
 
 > You'll see the PowerShell sessions from the container - with the same IDs but with a blank username. The container user doesn't map to any user on the host.
 
----
+
 
 ## Things to remember about Windows Server containers
 
@@ -201,7 +201,7 @@ Get-Process -Name powershell -IncludeUserName
 
 - Container processes run as an unknown user on the host, so a rogue container process wouldn't be able to access host files or other processes.
 
----
+
 
 ## Disconnect from the container
 
@@ -213,7 +213,7 @@ exit
 
 > The container is still running - check with `docker container ls`
 
----
+
 
 ## Clean up all containers
 
@@ -226,7 +226,7 @@ docker container rm --force `
   $(docker container ls --quiet --all)
 ```
 
----
+
 
 ## That's the basics
 

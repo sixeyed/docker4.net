@@ -1,12 +1,12 @@
 # Dockerfiles and Docker Images
 
----
+
 
 You package your own apps as Docker images using a [Dockerfile](https://docs.docker.com/engine/reference/builder/).
 
 The Dockerfile syntax is straightforward. In this section you'll walk through two Dockerfiles which package websites to run in Windows Docker containers.
 
----
+
 
 ## ASP.NET apps in Docker
 
@@ -19,7 +19,7 @@ The Dockerfile copies a simple `.aspx` file into the content directory for the d
 
 > IIS and ASP.NET 4.8 are already installed and configured in the base image.
 
----
+
 
 ## Build a simple website image
 
@@ -35,7 +35,7 @@ docker image build --tag hostname-app .
 
 > The output shows Docker executing each instruction in the Dockerfile, and tagging the final image.
 
----
+
 
 ## Run the new app
 
@@ -50,7 +50,7 @@ docker container run --detach --publish 8081:80 `
 
 > Any traffic coming into the server on port 8081 will be managed by Docker and sent to the container.
 
----
+
 
 ## Browse to the app
 
@@ -62,7 +62,7 @@ Traffic coming into port 8081 is captured by Docker and sent into the container.
 
 > Browse to the app at http://localhost:8081
 
----
+
 
 ## Run multiple instances of the app
 
@@ -78,7 +78,7 @@ for ($i=0; $i -lt 5; $i++) {
 
 > The `publish-all` flag publishes the container port to a random port on the host.
 
----
+
 
 ## Check all the containers
 
@@ -92,7 +92,7 @@ docker container ls
 docker container port app-1
 ```
 
----
+
 
 ## Check the web apps
 
@@ -109,7 +109,7 @@ for ($i=0; $i -lt 5; $i++) {
 
 > You'll see that each site displays a different hostname, which is the ID of the container running the app.
 
----
+
 
 ## See how much compute the containers use
 
@@ -123,7 +123,7 @@ Get-Process -Name w3wp | select Id, Name, WorkingSet, Cpu
 
 > The worker processes usually average around 40MB of RAM and <1 second of CPU time.
 
----
+
 
 ## Some issues to fix...
 
@@ -134,7 +134,7 @@ This is a simple ASP.NET website running in Docker, with just two lines in a Doc
 
 > The cold-start issue is because the IIS service doesn't start a worker process until the first HTTP request comes in.
 
----
+
 
 ## Logs inside containers
 
@@ -148,7 +148,7 @@ docker container logs app-0
 
 > Nothing. The logs are locked inside the container filesystem, Docker doesn't know about them.
 
----
+
 
 ## Build and run a more complex web app
 
@@ -160,7 +160,7 @@ The next [Dockerfile](../../docker/01-05-dockerfiles-and-images/tweet-app/Docker
 
 > This Dockerfile switches the [escape](https://docs.docker.com/engine/reference/builder/#escape) character to use backticks so file paths can use normal Windows backslashes.
 
----
+
 
 ## Build the Tweet app
 
@@ -174,7 +174,7 @@ docker build -t tweet-app .
 
 > `docker build` is the short form of `docker image build`
 
----
+
 
 ## Run the new app
 
@@ -185,7 +185,7 @@ docker  run -d -p 8080:80 `
   --name tweet-app tweet-app
 ```
 
----
+
 
 ## Browse to the new app
 
@@ -195,7 +195,7 @@ You can reach the site by browsing to `localhost` (or to your computer externall
 
 _Feel free to hit the Tweet button, sign in and share your progress :)_
 
----
+
 
 ## And check the IIS logs 
 
@@ -207,7 +207,7 @@ That's where Docker collects them so now you'll see the access logs.
 docker container logs tweet-app
 ```
 
----
+
 
 ## How about Linux images?
 
@@ -219,7 +219,7 @@ What goes into the Dockerfile is different because you'll use a Linux base image
 
 > It doesn't need any additional config because the base image already does all we need.
 
----
+
 
 ## Build the Linux version
 
@@ -233,7 +233,7 @@ cd ./docker/01-05-dockerfiles-and-images/tweet-app-linux
 docker build -t tweet-app:linux .
 ```
 
----
+
 
 ## Run the Linux version
 
@@ -249,7 +249,7 @@ docker run -d -p 8082:80 tweet-app:linux
 
 > Browse to http://localhost:8082 to see the new app. The Windows version is still there at http://localhost:8080/
 
----
+
 
 ## Clean up
 
@@ -271,7 +271,7 @@ docker container rm --force `
   $(docker container ls --quiet --all)
 ```
 
----
+
 
 ## Now you have your own Docker images
 
