@@ -16,7 +16,7 @@ jobs:
       - name: Build and push Linux base images
         working-directory: docker
         run: |
-          docker login -u $env:USER -p $env:TOKEN
+          docker login -u $USER -p $TOKEN
           docker-compose -f docker-compose-linux.yml build 
           docker-compose -f docker-compose-linux.yml push
         env:
