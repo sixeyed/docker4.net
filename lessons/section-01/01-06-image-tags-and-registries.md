@@ -159,7 +159,7 @@ You've used simple tags so far. You can store many versions of the same app in a
 _Build a new version of the Linux Tweet app, tagged as `v2`:_
 
 ```
-cd ./docker/05-dockerfiles-and-images/tweet-app-linux-v2
+cd ./docker/01-05-dockerfiles-and-images/tweet-app-linux-v2
 
 docker build -t "$env:dockerId/tweet-app:v2-linux" .
 ```

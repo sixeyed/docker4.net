@@ -10,7 +10,7 @@ The Dockerfile syntax is straightforward. In this section you'll walk through tw
 
 ## ASP.NET apps in Docker
 
-Have a look at the [Dockerfile for this app](../../docker/05-dockerfiles-and-images/hostname-app/Dockerfile). It builds a simple ASP.NET website that displays the host name of the server. There are only two instructions:
+Have a look at the [Dockerfile for this app](../../docker/01-05-dockerfiles-and-images/hostname-app/Dockerfile). It builds a simple ASP.NET website that displays the host name of the server. There are only two instructions:
 
 - [FROM](https://docs.docker.com/engine/reference/builder/#from) specifes the image to use as the starting point for this image
 - [COPY](https://docs.docker.com/engine/reference/builder/#copy) copies a file from the host into the image, at a known location.
@@ -28,7 +28,7 @@ You package an app by building a Docker image from a Dockerfile. This is a .NET 
 _Change to the app directory and build the Docker image:_
 
 ```
-cd ./docker/05-dockerfiles-and-images/hostname-app
+cd ./docker/01-05-dockerfiles-and-images/hostname-app
 
 docker image build --tag hostname-app .
 ```
@@ -152,11 +152,11 @@ docker container logs app-0
 
 ## Build and run a more complex web app
 
-The next [Dockerfile](../../docker/05-dockerfiles-and-images/tweet-app/Dockerfile) fixes those issues. These are the new instructions it uses:
+The next [Dockerfile](../../docker/01-05-dockerfiles-and-images/tweet-app/Dockerfile) fixes those issues. These are the new instructions it uses:
 
 - [SHELL](https://docs.docker.com/engine/reference/builder/#shell) switches to use PowerShell instead of the Windows command line
 - [RUN](https://docs.docker.com/engine/reference/builder/#run) executes some PowerShell to configure IIS to write all log output to a single file
-- [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) configures a [startup script](../../docker/05-dockerfiles-and-images/tweet-app/start.ps1) to run when the container starts
+- [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) configures a [startup script](../../docker/01-05-dockerfiles-and-images/tweet-app/start.ps1) to run when the container starts
 
 > This Dockerfile switches the [escape](https://docs.docker.com/engine/reference/builder/#escape) character to use backticks so file paths can use normal Windows backslashes.
 
@@ -167,7 +167,7 @@ The next [Dockerfile](../../docker/05-dockerfiles-and-images/tweet-app/Dockerfil
 Build an image from this new Dockerfile.
 
 ```
-cd ./docker/05-dockerfiles-and-images/tweet-app
+cd ./docker/01-05-dockerfiles-and-images/tweet-app
 
 docker build -t tweet-app .
 ```
@@ -215,7 +215,7 @@ The Dockerfile syntax is the same and the `docker build` command is the same.
 
 What goes into the Dockerfile is different because you'll use a Linux base image, Linux shell commands and Linux file paths.
 
-[This Dockerfile](../../docker/05-dockerfiles-and-images/tweet-app-linux/Dockerfile) is a Linux version of the tweet app. 
+[This Dockerfile](../../docker/01-05-dockerfiles-and-images/tweet-app-linux/Dockerfile) is a Linux version of the tweet app. 
 
 > It doesn't need any additional config because the base image already does all we need.
 
@@ -228,7 +228,7 @@ You need to switch to Linux container mode in Docker Desktop. **Your Windows con
 _Build the Linux version of the app:_
 
 ```
-cd ./docker/05-dockerfiles-and-images/tweet-app-linux
+cd ./docker/01-05-dockerfiles-and-images/tweet-app-linux
 
 docker build -t tweet-app:linux .
 ```
