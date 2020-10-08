@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
+  <Product Id="*" Name="SignUp Web" Language="1033" Version="1.0" Manufacturer="docker4.net" UpgradeCode="671ff6e7-da06-414f-a0e6-d8626a7bd12c">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Description="Version:1.0" />
+   
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="SignUp" Level="1">
+      <ComponentGroupRef Id="SignUp_Web" />
+      <ComponentRef Id="Web.Site"/>
+    </Feature>
+
+    <iis:WebSite Id="DefaultWebSite" Description="Default Web Site">
+      <iis:WebAddress Id="AllUnassigned" Port="80" />
+    </iis:WebSite>    
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="websites">
+        <Directory Id="Docker4.Net" Name="docker4.net">
+          <Directory Id="INSTALLFOLDER" Name="SignUp.Web">
+            </Directory>          
+        </Directory>
+      </Directory>
+      <Component Id="Web.Site" Guid="{B935A624-63E6-4554-A9E2-AB4893AFC117}">
+        <iis:WebVirtualDir Id="WebVirtualDir"
+                   Alias="SignUp"
+                   Directory="INSTALLFOLDER" WebSite="DefaultWebSite">
+          <iis:WebApplication Id="WebApplication" Name="SignUp" />
+        </iis:WebVirtualDir>
+      </Component>
+    </Directory>
+  </Fragment>
+  
+</Wix>

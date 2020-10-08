@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.DatabaseCheck", "Utilities.DatabaseCheck\Utilities.DatabaseCheck.csproj", "{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.HttpCheck", "Utilities.HttpCheck\Utilities.HttpCheck.csproj", "{C3451E4C-C103-4B41-88C5-F13371E2444A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C17E61C8-C12F-46AB-A175-04D6002F74C8}
+	EndGlobalSection
+EndGlobal
