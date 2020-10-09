@@ -9,7 +9,7 @@ You'll see how to run task containers, interactive containers and background con
 
 ## Prerequisites
 
-To follow along you will need [Docker Desktop]() set to run in Windows container mode (see lesson 2 for the setup guide).
+To follow along you will need [Docker Desktop](https://www.docker.com/products/docker-desktop) set to run in Windows container mode (see lesson 2 for the setup guide).
 
 _Run this command to show the OS for the Docker components:_
 
