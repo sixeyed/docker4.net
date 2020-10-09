@@ -8,9 +8,9 @@ Making apps behave how Docker expects can all be done in the Dockerfile setup, y
 
 ## Understanding app configuration in .NET Core
 
-This is a modern app stack with a common approach to config - reading settings from multiple sources and merging them together.
+This is a modern app stack with a new approach to config - reading settings from multiple sources and merging them together.
 
-The default behavior for ASP.NET Core merges in the JSON settings file with environment variables. The reference data API uses a custom setup in [Program.cs](), with sources specified in [ConfigurationBuilderExtensions.cs](src\SignUp.Core\Extensions\ConfigurationBuilderExtensions.cs).
+The default behavior for ASP.NET Core merges in the JSON settings file with environment variables. The reference data API uses a custom setup in [Program.cs](../../src/SignUp.Api.ReferenceData/Program.cs), with sources specified in [ConfigurationBuilderExtensions.cs](../../src/SignUp.Core/Extensions/ConfigurationBuilderExtensions.cs).
 
 _Run a new API container with a custom logging level:_
 
@@ -41,14 +41,14 @@ Invoke-RestMethod -Method GET http://localhost:8082/api/roles
 docker logs api
 ```
 
-> The Debug-level logs aren't written any more.
+> The Debug-level logs aren't written any more
 
 
 ## .NET Framework apps are harder
 
-The web app uses the standard XML configuration model. You can use [configuration builders]() to override app settings from environment variables, but that doesn't work for custom config sections.
+The web app uses the standard XML configuration model. You can use [configuration builders](https://docs.microsoft.com/en-us/aspnet/config-builder) to override app settings from environment variables, but that doesn't work for custom config sections.
 
-The [Web.config]() file in the web image references the [log4net.config]() file which sets up the logging details.
+The [Web.config](../../src/SignUp.Web/Web.config) file in the web image references the [log4net.config](../../src/SignUp.Web/log4net.config) file which sets up the logging details.
 
 _Find the logs in the web container:_
 
@@ -56,14 +56,14 @@ _Find the logs in the web container:_
 docker exec signup-web powershell cat /logs/signup.log
 ```
 
-> We need to relay those logs out to Docker.
+> We need to relay those logs out to Docker
 
 
 ## Tailing the log file 
 
-We saw this in section 1 with IIS, but it's much simpler with the .NET app - we don't need to configure IIS, we just need the log file relay.
+We saw this in Section 1 with IIS, but it's much simpler with the .NET app - we don't need to configure IIS, we just need the log file relay.
 
-The [v5 Dockerfile]() sets that up, using the [start.ps1]() script to read the log file out to the console.
+The [v5 Dockerfile](../../docker/02-06-platform-integration/signup-web/v5/Dockerfile) sets that up, using the [start.ps1](../../docker/02-06-platform-integration/signup-web/v5/start.ps1) script to read the log file out to the console.
 
 _Build the new web image:_
 
@@ -74,7 +74,7 @@ docker image build -t signup-web:02-05 `
   -f ./docker/02-06-platform-integration/signup-web/v5/Dockerfile .
 ```
 
-> The build is fast because almost all of the layers are cached.
+> The build is fast because almost all of the layers are cached
 
 
 ## Run the new web app
@@ -105,16 +105,16 @@ docker container exec signup-db `
 docker logs signup-web
 ```
 
-> Now there are debug logs.
+> Now there are debug logs
 
 
 ## Tuning the logging level with config
 
 The .NET app only looks to the filesystem for configuration settings. 
 
-We can't override the logging level with environment variables. Instead we can load a new config file into the container.
+We can't override the logging level with environment variables. Instead we can load a different config file into a container.
 
-The [v6 Dockerfile]() uses a new [Web.config]() which puts the config files into a separate folder.
+The [v6 Dockerfile](../../docker/02-06-platform-integration/signup-web/v6/Dockerfile) uses a new [Web.config](../../docker/02-06-platform-integration/signup-web/v6/Web.config) which puts the config files into a separate folder.
 
 _Build the image:_
 
@@ -127,9 +127,9 @@ docker image build -t signup-web:02-06 `
 
 Docker builds the container filesystem from the image and from other sources. You can mount a local directory on your machine into a directory in the container.
 
-This [log4net.config]() file sets the level to `INFO` - and it can be mounted into the container to override the file from the image.
+This [log4net.config](../../app/02-06-platform-integration/config/log4net.config) file sets the level to `INFO` - and it can be mounted into the container to override the file from the image.
 
-_Check the default logging config and run a new container with the custom file:_
+_Check the default logging config with the custom file:_
 
 ```
 docker run --entrypoint powershell signup-web:02-06 cat /web-app/config/log4net.config
@@ -140,7 +140,7 @@ docker run --entrypoint powershell `
  cat /web-app/config/log4net.config
 ```
 
-> When you mount a directory the contents of the target directory are hidden.
+> When you mount a directory the source replaces all the content in the target directory
 
 ## Run a web container with a volume mount
 
@@ -173,7 +173,7 @@ docker container exec signup-db `
 docker logs signup-web
 ```
 
-> The app works in the same way, now the logs are at info level.
+> The app works in the same way, now the logs are at info level
 
 
 ## That's it for now

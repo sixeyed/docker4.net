@@ -1,7 +1,7 @@
 
 # Running Multi-container Applications
 
-Docker creates the environment where your applications run.
+Docker creates the container environment where your applications run.
 
 Every container has an IP address managed by Docker and containers connected to the same Docker network can communicate with standard network protocols.
 

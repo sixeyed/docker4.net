@@ -46,19 +46,17 @@ docker container run -d -p 8082:80 --name api `
 
 ## Try it out
 
-The API is available on port `8082` on your Docker host. It's a REST API so you can interact with the browser or with PowerShell.
+The API is available on port `8082` on your Docker host. It's a REST API so you can cal it from the browser or with PowerShell.
 
-_Fetch the list of roles & countries:_
+_Fetch the lists of roles & countries:_
 
 ```
 Invoke-RestMethod -Method GET http://localhost:8082/api/roles
-```
 
-```
 Invoke-RestMethod -Method GET http://localhost:8082/api/countries
 ```
 
-> The response is JSON but PowerShell formats it neatly as a table.
+> The response is JSON but PowerShell formats it neatly as a table
 
 
 ## Check the API logs
@@ -73,7 +71,7 @@ _Show the API logs:_
 docker container logs api
 ```
 
-> Logging is set to Debug level in the packaged config file.
+> Logging is set to Debug level in the packaged config file
 
 
 ## Compare the web container
@@ -88,7 +86,7 @@ _Show the web container logs:_
 docker container logs signup-web
 ```
 
-> Nothing.
+> Nothing
 
 
 ## Apps need to be good citizens for Docker
@@ -98,6 +96,4 @@ Docker adds consistency to all your apps but apps need to behave in the expected
 As a minimum you should set up your Docker images so containers can read configuration settings from the environment and write logs to standard out.
 
 Next we'll see how that works for the .NET Framework and .NET Core components.
-
-no logs at all
 

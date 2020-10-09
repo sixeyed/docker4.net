@@ -44,7 +44,7 @@ docker run -d -p 8080:80 --name web signup-web:02-01
 
 ## Debug the problem
 
-You can connect to the container to check the configuration setting.
+You can connect to the container to check the configuration settings.
 
 _Run an interactive session in the container:_
 
@@ -84,7 +84,7 @@ docker exec -it web powershell ping SIGNUP-DB-DEV01
 
 ## Check the container networks
 
-You can explicitly attach containers to networks. On Windows containers connect to the `nat` network by default.
+You can explicitly attach containers to networks. Windows containers connect to the `nat` network by default.
 
 ```
 docker container inspect web
@@ -97,7 +97,7 @@ docker network inspect nat
 
 ## Try the app now
 
-The app uses Entity Framework code first, so it deploys the database schema when it connects to the empty SQL Server instance. 
+The app uses Entity Framework code first, so it creates the database schema when it connects to the empty SQL Server instance. 
 
 The website reads reference data fron the database and inserts new data when a user signs up.
 
@@ -108,9 +108,9 @@ _Try the app at http://localhost:8080/signup_
 
 ## Check the database
 
-When you see the Thank You page, the data is in SQL Server.
+When you see the _Thank You_ page, the data is in SQL Server.
 
-That container doesn't publish any ports, but we can run a SQL query inside the container to see the data.
+The database container doesn't publish any ports, but we can run a SQL query inside the container to see the data.
 
 _Query the prospects table in the database:_
 
@@ -127,7 +127,7 @@ docker container exec signup-db `
 
 Docker images are a packaging and distribution format - and so are MSIs. 
 
-Using an MSI means you need to maintain another packaging setup, this one uses WiX:
+Using an MSI means you need to maintain another packaging setup. This one uses [WiX](https://wixtoolset.org):
 
 - [Product.wxs](../../src/SignUp.Web.Installer/Product.wxs) for the install
 - [SignUp.wxs](../../src/SignUp.Web.Installer/SignUp.wxs) for the application content
