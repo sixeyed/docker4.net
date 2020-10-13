@@ -115,7 +115,7 @@ The database container doesn't publish any ports, but we can run a SQL query ins
 _Query the prospects table in the database:_
 
 ```
-docker container exec signup-db `
+docker container exec SIGNUP-DB-DEV01 `
   powershell `
   "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
