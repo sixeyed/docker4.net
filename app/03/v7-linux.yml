@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:  
+  message-queue:
+    image: nats:2.1
+    ports:
+      - "4222:4222"
+    networks:
+      - signup-net
+
+  signup-index-handler:
+    image: index-handler:linux
+    build:
+      context: ../.. 
+      dockerfile: docker/03-06-backend-analytics/index-handler/Dockerfile
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - signup-net
+
+  elasticsearch:
+    image: elasticsearch:6.8.12
+    environment:
+      - discovery.type=single-node
+    networks:
+      - signup-net
+
+  kibana:
+    image: kibana:6.8.12
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - signup-net
+
+networks:
+  signup-net:

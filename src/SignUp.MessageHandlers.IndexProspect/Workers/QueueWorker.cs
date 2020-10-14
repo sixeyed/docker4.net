@@ -19,11 +19,14 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
         private static Counter _EventCounter = Metrics.CreateCounter("IndexHandler_Events", "Event count", "host", "status");
         private static string _Host = Environment.MachineName;
 
+
+        private readonly MessageQueue _queue;
         private readonly IConfiguration _config;
         private readonly Indexer.Index _index;
 
-        public QueueWorker(IConfiguration config, Indexer.Index index)
+        public QueueWorker(MessageQueue queue, IConfiguration config, Indexer.Index index)
         {
+            _queue = queue;
             _config = config;
             _index = index;
         }
@@ -36,7 +39,7 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
             }            
 
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
-            using (var connection = MessageQueue.CreateConnection())
+            using (var connection = _queue.CreateConnection())
             {
                 var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);
                 subscription.MessageHandler += IndexProspect;

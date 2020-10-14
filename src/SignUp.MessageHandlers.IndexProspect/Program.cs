@@ -5,6 +5,7 @@ using SignUp.MessageHandlers.IndexProspect.Indexer;
 using SignUp.MessageHandlers.IndexProspect.Workers;
 using Prometheus;
 using System.Runtime.InteropServices;
+using SignUp.Messaging;
 
 namespace SignUp.MessageHandlers.IndexProspect
 {
@@ -19,6 +20,7 @@ namespace SignUp.MessageHandlers.IndexProspect
             
             var serviceProvider = new ServiceCollection()
                 .AddSingleton(Config.Current)
+                .AddSingleton<MessageQueue>()
                 .AddSingleton<Index>()
                 .AddSingleton<QueueWorker>()
                 .BuildServiceProvider();

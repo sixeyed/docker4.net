@@ -1,13 +1,19 @@
-﻿using NATS.Client;
-using SignUp.Core;
+﻿using Microsoft.Extensions.Configuration;
+using NATS.Client;
 using SignUp.Messaging.Messages;
 
 namespace SignUp.Messaging
 {
-    public static class MessageQueue
+    public class MessageQueue
     {
+        private readonly IConfiguration _config;
 
-        public static void Publish<TMessage>(TMessage message)
+        public MessageQueue(IConfiguration config)
+        {
+            _config = config;
+        }
+
+        public void Publish<TMessage>(TMessage message)
             where TMessage : Message
         {
             using (var connection = CreateConnection())
@@ -17,9 +23,9 @@ namespace SignUp.Messaging
             }
         }
 
-        public static IConnection CreateConnection()
+        public IConnection CreateConnection()
         {
-            return new ConnectionFactory().CreateConnection(Config.Current["MessageQueue:Url"]);
+            return new ConnectionFactory().CreateConnection(_config["MessageQueue:Url"]);
         }
     }
 }

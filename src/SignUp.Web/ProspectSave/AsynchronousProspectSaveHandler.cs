@@ -7,6 +7,13 @@ namespace SignUp.Web.ProspectSave
 {
     public class AsynchronousProspectSaveHandler : IProspectSaveHandler
     {
+        private readonly MessageQueue _queue;
+
+        public AsynchronousProspectSaveHandler(MessageQueue queue)
+        {
+            _queue = queue;
+        }
+
         public void SaveProspect(Prospect prospect)
         {
             var eventMessage = new ProspectSignedUpEvent
@@ -15,7 +22,7 @@ namespace SignUp.Web.ProspectSave
                 SignedUpAt = DateTime.UtcNow
             };
 
-            MessageQueue.Publish(eventMessage);
+            _queue.Publish(eventMessage);
         }
     }
 }

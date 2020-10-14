@@ -1,1 +1,2 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+ARG WINVER=ltsc2019
+FROM mcr.microsoft.com/windows/servercore:$WINVER

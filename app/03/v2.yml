@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:  
+  signup-db:
+    image: docker4dotnet/sql-server:2017
+    environment:
+      - sa_password=docker4.net!
+    networks:
+      - signup-net
+
+  signup-web:
+    image: signup-web:02-06
+    ports:
+      - 8081:80
+    volumes:
+      - type: bind
+        source: .\03-02\config
+        target: C:\web-app\config
+    depends_on:
+      - signup-db
+    networks:
+      - signup-net
+
+  reference-data-api:
+    image: reference-data-api
+    ports:
+      - 8082:80
+    environment: 
+      - Logging:LogLevel:Default=Information
+    depends_on:
+      - signup-db
+    networks:
+      - signup-net
+
+networks:
+  signup-net:

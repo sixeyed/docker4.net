@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:  
+  signup-db:
+    image: docker4dotnet/sql-server:2017
+    environment:
+      - sa_password=docker4.net!
+    networks:
+      - signup-net
+
+  signup-web:
+    image: signup-web:02-06
+    environment:
+      - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
+      - ReferenceDataApi:Url=http://reference-data-api/api
+      - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=PathPrefix(`/app/`)"
+    depends_on:
+      - signup-db
+      - reference-data-api
+      - message-queue
+    networks:
+      - signup-net
+
+  reference-data-api:
+    image: reference-data-api
+    environment: 
+      - Logging:LogLevel:Default=Information
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=PathPrefix(`/api/`)"
+    depends_on:
+      - signup-db
+    networks:
+      - signup-net
+
+  homepage:
+    image: homepage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=PathPrefix(`/`)"
+    networks:
+      - signup-net
+
+  proxy:
+    image: traefik:v2.3-windowsservercore-1809
+    command:
+      - "--providers.docker"
+      - "--providers.docker.endpoint=npipe:////./pipe/docker_engine"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=signup-net"
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true"
+    ports:
+      - "8080:80"
+      - "8088:8080"
+    volumes:
+      - type: npipe
+        source: \\.\pipe\docker_engine
+        target: \\.\pipe\docker_engine      
+    networks:
+      - signup-net
+
+  message-queue:
+    image: nats:2.1
+    networks:
+      - signup-net
+
+  signup-save-handler:
+    image: save-handler
+    depends_on:
+      - signup-db
+      - message-queue
+    networks:
+      - signup-net
+
+  signup-index-handler:
+    image: index-handler
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - signup-net
+
+  elasticsearch:
+    image: elasticsearch
+    networks:
+      - signup-net
+
+  kibana:
+    image: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - signup-net
+
+networks:
+  signup-net:

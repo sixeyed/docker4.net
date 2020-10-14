@@ -28,8 +28,10 @@ namespace SignUp.MessageHandlers.SaveProspect
                 StartMetricServer();
             }
 
+            var queue = new MessageQueue(Config.Current);
+
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
-            using (var connection = MessageQueue.CreateConnection())
+            using (var connection = queue.CreateConnection())
             {
                 var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);
                 subscription.MessageHandler += SaveProspect;

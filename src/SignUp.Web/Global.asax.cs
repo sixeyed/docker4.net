@@ -8,6 +8,7 @@ using System.Web.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SignUp.Core;
+using SignUp.Messaging;
 using SignUp.Model;
 using SignUp.Model.Initializers;
 using SignUp.Web.Logging;
@@ -23,6 +24,8 @@ namespace SignUp.Web
         static Global()
         {
             ServiceProvider = new ServiceCollection()
+                .AddSingleton(Config.Current)
+                .AddSingleton<MessageQueue>()
                 .AddTransient<DatabaseReferenceDataLoader>()
                 .AddTransient<ApiReferenceDataLoader>()
                 .AddTransient<SynchronousProspectSaveHandler>()
