@@ -29,7 +29,7 @@ docker image build --tag index-handler `
 
 The Elasticsearch team maintain their own Docker image for Linux containers, but not yet for Windows.
 
-It's easy to package your own image to run Elasticsearch - this [Dockerfile](../../docker/elasticsearch/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
+It's easy to package your own image to run Elasticsearch - this [Dockerfile](../../docker/03-06-backend-analytics/elasticsearch/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
 
 _Build the database image:_
 
@@ -43,7 +43,7 @@ docker image build --tag elasticsearch `
 
 Same story with Kibana, which is the analytics UI that reads from Elasticsearch.
 
-The [Dockerfile](../../docker/kibana/Dockerfile) downloads and installs Kibana, and it packages a [startup script](./docker/kibana/kibana.bat) with some default configuration.
+The [Dockerfile](../../docker/03-06-backend-analytics/kibana/Dockerfile) downloads and installs Kibana, and it packages a [startup script](../../docker/03-06-backend-analytics/kibana/kibana.bat) with some default configuration.
 
 _Build the UI image:_
 

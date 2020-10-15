@@ -47,9 +47,9 @@ docker logs 03_reference-data-api_1
 
 The current homepage is in the WebForms codebase. Any UI changes would need a complete rebuild of the monolith.
 
-Check out [the new homepage](../../docker/03-03-frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
+Check out [the new homepage](../../docker/03-03-frontend-modernize/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
 
-The [Dockerfile](../../docker/03-03-frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
+The [Dockerfile](../../docker/03-03-frontend-modernize/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
 
 _Build the homepage image:_
 

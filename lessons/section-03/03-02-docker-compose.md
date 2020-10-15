@@ -64,7 +64,7 @@ The app works in exactly the same way, we've just moved the management overhead 
 _Sign up at http://localhost:8081/app and check the database:_
 
 ```
-docker container exec signup-db `
+docker container exec 03_signup-db_1 `
   powershell `
   "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
