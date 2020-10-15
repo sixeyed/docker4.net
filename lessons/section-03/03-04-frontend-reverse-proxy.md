@@ -13,7 +13,7 @@ Traefik can do a lot more than that - SSL termination, load-balancing and sticky
 
 ## Upgrade to the new homepage
 
-The [v4 manifest](./app/03/v4.yml) adds services for the homepage and the proxy. The routing rules for the proxy are specified using [container labels](https://github.com/containous/traefik-library-image/blob/master/windows/1809/Dockerfile).
+The [v4 manifest](../../app/03/v4.yml) adds services for the homepage and the proxy. The routing rules for the proxy are specified using [container labels](https://github.com/containous/traefik-library-image/blob/master/windows/1809/Dockerfile).
 
 Only the proxy has `ports` specified. It's the public entrypoint to the app, the other containers can access each other, but the outside world can't get to them.
 

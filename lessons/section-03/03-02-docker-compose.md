@@ -22,7 +22,7 @@ docker-compose
 
 In section 2 we ran a SQL Server database, ASP.NET web app and ASP.NET Core web API in containers.
 
-This [docker-compose.yml](./app/03/docker-compose.yml) spec describes the same app:
+This [docker-compose.yml](../../app/03/docker-compose.yml) spec describes the same app:
 
 - the `services` section defines the parts of the app which run in containers
 - the `networks` section defines the Docker networks
@@ -89,7 +89,7 @@ docker logs 03_reference-data-api_1
 
 The Compose spec includes all the options you would usually use in `docker` commands, so you can define environment variables and volume mounts too.
 
-The [v2.yml](./app/03/v2.yml) Compose spec adds logging configuration to set logging level to Info.
+The [v2.yml](../../app/03/v2.yml) Compose spec adds logging configuration to set logging level to Info.
 
 _Bring up the new version of the app:_
 

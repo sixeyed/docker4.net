@@ -12,16 +12,16 @@ The WebForms app needs code changes to fetch reference data from the new API rat
 
 I've done that by bringing in the same dependency injection and configuration approach used in .NET Core apps:
 
-- [Global.asax.cs](./src/SignUp.Web/Global.asax.cs) sets up the config and services
-- [appsettings.json](./src/SignUp.Web/appsettings.json) is for the new config settings
-- [SignUp.aspx.cs](./src/SignUp.Web/SignUp.aspx.cs) uses config to load dependencies
-- [ApiReferenceDataLoader.cs](./src/SignUp.Web/ReferenceData/ApiReferenceDataLoader.cs) is the API consumer
+- [Global.asax.cs](../../src/SignUp.Web/Global.asax.cs) sets up the config and services
+- [appsettings.json](../../src/SignUp.Web/appsettings.json) is for the new config settings
+- [SignUp.aspx.cs](../../src/SignUp.Web/SignUp.aspx.cs) uses config to load dependencies
+- [ApiReferenceDataLoader.cs](../../src/SignUp.Web/ReferenceData/ApiReferenceDataLoader.cs) is the API consumer
 
 ## Using configuration for feature switches
 
 This code is all in the `:02-06` web image we've already built, and the new features can be enabled with configuration.
 
-Compose spec [v3.yml](./app/03/v3.yml) sets the new config for the web app:
+Compose spec [v3.yml](../../app/03/v3.yml) sets the new config for the web app:
 
 - using environment variables to set the reference data loader implementation
 - removing the volume bind so we see all the debug level logs
@@ -47,9 +47,9 @@ docker logs 03_reference-data-api_1
 
 The current homepage is in the WebForms codebase. Any UI changes would need a complete rebuild of the monolith.
 
-Check out [the new homepage](./docker/03-03-frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
+Check out [the new homepage](../../docker/03-03-frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
 
-The [Dockerfile](./docker/03-03-frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
+The [Dockerfile](../../docker/03-03-frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
 
 _Build the homepage image:_
 

@@ -9,15 +9,15 @@ When you sign up the web app will publish an event message on the queue, which a
 
 ## The save message handler
 
-The new component is a simple .NET Console app. You can browse the source for the save message handler - the work is all done in the [Program](./src/SignUp.MessageHandlers.SaveProspect/Program.cs) class.
+The new component is a simple .NET Console app. You can browse the source for the save message handler - the work is all done in the [Program](../../src/SignUp.MessageHandlers.SaveProspect/Program.cs) class.
 
 This is a full .NET Framework app, so it can continue to use the original Entity Framework model from the monolith. It's a low-risk approach to updating the architecture.
 
-The message handler saves data using the same code that was originally in the web app in the [SynchronousProspectSaveHandler](./src/SignUp.Web/ProspectSave/SynchronousProspectSaveHandler.cs) class.
+The message handler saves data using the same code that was originally in the web app in the [SynchronousProspectSaveHandler](../../src/SignUp.Web/ProspectSave/SynchronousProspectSaveHandler.cs) class.
 
 ## Build the message handler
 
-Check out the [Dockerfile](./docker/03-05-backend-async-messaging/save-handler/Dockerfile) for the message handler.
+Check out the [Dockerfile](../../docker/03-05-backend-async-messaging/save-handler/Dockerfile) for the message handler.
 
 It uses the same multi-stage approach to compile and package the app using containers, and the images use .NET Framework running on Windows Server Core.
 
@@ -31,11 +31,11 @@ docker image build `
 
 ## Using asynchronous messaging
 
-Check out the [v5 manifest](./app/03/v5.yml) - it adds services for the message handler and the message queue.
+Check out the [v5 manifest](../../app/03/v5.yml) - it adds services for the message handler and the message queue.
 
 The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers. The NATS team maintain official container images on Docker Hub.
 
-The manifest also configures the web app to use messaging - using dependency injection to load a different implementation of the prospect save handler: [AsynchronousProspectSaveHandler.cs](./src/SignUp.Web/ProspectSave/AsynchronousProspectSaveHandler.cs)
+The manifest also configures the web app to use messaging - using dependency injection to load a different implementation of the prospect save handler: [AsynchronousProspectSaveHandler.cs](../../src/SignUp.Web/ProspectSave/AsynchronousProspectSaveHandler.cs)
 
 ## Upgrade to use the message handler
 

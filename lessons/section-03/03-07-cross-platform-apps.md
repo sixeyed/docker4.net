@@ -11,14 +11,14 @@ You can run a hybrid solution using Docker Desktop, but there are some limitatio
 
 Docker Compose specs can include `build` sections which means you can use the Compose command line to build all the images for your app.
 
-The [v7-windows.yml](./app/03/v7-windows.yml) spec includes just the Windows and front-end components, with build details for all the custom images.
+The [v7-windows.yml](../../app/03/v7-windows.yml) spec includes just the Windows and front-end components, with build details for all the custom images.
 
 _Build the images with Compose:_
 
 ```
 cd $env:docker4dotnet
 
-docker-compose -f .\app\03\v7-windows.yml build
+docker-compose -f ./app/03/v7-windows.yml build
 ```
 
 > The build should be fast because all the layers are cached.
@@ -34,16 +34,16 @@ docker container rm -f $(docker container ls -aq)
 
 ## Prep the Linux image variants
 
-The [v7-linux.yml](./app/03/v7-linux.yml) spec includes the .NET Core analytics message handler, and official images for NATS, Elasticsearch and Kibana.
+The [v7-linux.yml](../../app/03/v7-linux.yml) spec includes the .NET Core analytics message handler, and official images for NATS, Elasticsearch and Kibana.
 
 The message queue will be used by the WebForms Windows container, so the port is published to the host.
 
 _Switch to Linux container mode and build and pull the images:_
 
 ```
-docker-compose -f .\app\03\v7-linux.yml build
+docker-compose -f ./app/03/v7-linux.yml build
 
-docker-compose -f .\app\03\v7-linux.yml pull
+docker-compose -f ./app/03/v7-linux.yml pull
 ```
 
 ## Run the Linux components
@@ -55,7 +55,7 @@ _We're in Linux container mode now:_
 ```
 docker container rm -f $(docker container ls -aq)
 
-docker-compose -f .\app\03\v7-linux.yml up -d
+docker-compose -f ./app/03/v7-linux.yml up -d
 ```
 
 ## Check the Linux components are running
@@ -74,7 +74,7 @@ docker logs 03_signup-index-handler_1
 
 ## Run the Windows components
 
-We'll use Windows containers for the .NET Framework components, together with SQL Server and Traefik. The [v7-windows.yml](./app/03/v7-windows.yml) configuration routes to the message queue via the host machine's IP address.
+We'll use Windows containers for the .NET Framework components, together with SQL Server and Traefik. The [v7-windows.yml](../../app/03/v7-windows.yml) configuration routes to the message queue via the host machine's IP address.
 
 We could run the API and homepage as Linux containers, but Traefik wouldn't find them - it can only connect to one Docker server.
 
@@ -87,7 +87,7 @@ $env:HOST_IP=$(((Get-NetIPConfiguration | Where-Object {$_.IPv4DefaultGateway -n
 
 echo $env:HOST_IP
 
-docker-compose -f .\app\03\v7-windows.yml up -d
+docker-compose -f ./app/03/v7-windows.yml up -d
 ```
 
 ## Try the app

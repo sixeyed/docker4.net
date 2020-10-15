@@ -9,14 +9,14 @@ We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) 
 
 To get data into Elasticsearch when a user signs up, we just need another message handler, which will listen for the same messages published by the web app.
 
-The new handler is a .NET Core console application. The code is in [QueueWorker.cs](./src/SignUp.MessageHandlers.IndexProspect/Workers/QueueWorker.cs) - it subscribes to the same event messages, then enriches the data and stores it in Elasticsearch.
+The new handler is a .NET Core console application. The code is in [QueueWorker.cs](../../src/SignUp.MessageHandlers.IndexProspect/Workers/QueueWorker.cs) - it subscribes to the same event messages, then enriches the data and stores it in Elasticsearch.
 
 
 ## Build the analytics message handler
 
 The new message handler only shares the messaging library with the WebForms app, so there are no .NET Framework dependencies and it can run in .NET Core.
 
-The [Dockerfile](./docker/03-06-backend-analytics/index-handler/Dockerfile) follows the familiar pattern - the app image is based on the .NET Core runtime image.
+The [Dockerfile](../../docker/03-06-backend-analytics/index-handler/Dockerfile) follows the familiar pattern - the app image is based on the .NET Core runtime image.
 
 _Build the image in the usual way:_
 
@@ -29,7 +29,7 @@ docker image build --tag index-handler `
 
 The Elasticsearch team maintain their own Docker image for Linux containers, but not yet for Windows.
 
-It's easy to package your own image to run Elasticsearch - this [Dockerfile](./docker/elasticsearch/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
+It's easy to package your own image to run Elasticsearch - this [Dockerfile](../../docker/elasticsearch/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
 
 _Build the database image:_
 
@@ -43,7 +43,7 @@ docker image build --tag elasticsearch `
 
 Same story with Kibana, which is the analytics UI that reads from Elasticsearch.
 
-The [Dockerfile](./docker/kibana/Dockerfile) downloads and installs Kibana, and it packages a [startup script](./docker/kibana/kibana.bat) with some default configuration.
+The [Dockerfile](../../docker/kibana/Dockerfile) downloads and installs Kibana, and it packages a [startup script](./docker/kibana/kibana.bat) with some default configuration.
 
 _Build the UI image:_
 
@@ -54,7 +54,7 @@ docker image build --tag kibana `
 
 ## Run the app with analytics
 
-In the [v6 manifest](./app/03/v6.yml), none of the existing containers get replaced - their configuration hasn't changed. Only the new containers get created.
+In the [v6 manifest](../../app/03/v6.yml), none of the existing containers get replaced - their configuration hasn't changed. Only the new containers get created.
 
 _Upgrade to v6:_
 
