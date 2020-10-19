@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  signup-index-handler:
+    image: index-handler
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - signup-net
+
+  elasticsearch:
+    image: elasticsearch
+    networks:
+      - signup-net
+
+  kibana:
+    image: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - signup-net
+
+networks:
+  signup-net:

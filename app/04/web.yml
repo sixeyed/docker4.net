@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  signup-db:
+    image: signup-db
+    build:
+      context: ../..
+      dockerfile: docker/04-01-logmonitor/signup-db/Dockerfile
+    environment:
+      - sa_password=docker4.net!
+    networks:
+      - signup-net
+
+  signup-web:
+    image: signup-web:04-01
+    build:
+      context: ../..
+      dockerfile: docker/04-01-logmonitor/signup-web/Dockerfile
+    environment:
+      - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
+      - ReferenceDataApi:Url=http://reference-data-api/api
+      - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    ports:
+      - "8081:80"
+    depends_on:
+      - signup-db
+      - reference-data-api
+      - message-queue
+    networks:
+      - signup-net
+
+  reference-data-api:
+    image: reference-data-api
+    environment:
+      - Logging:LogLevel:Default=Information
+    ports:
+      - "8082:80"
+    depends_on:
+      - signup-db
+    networks:
+      - signup-net
+
+  message-queue:
+    image: nats:2.1
+    networks:
+      - signup-net
+
+  signup-save-handler:
+    image: save-handler
+    depends_on:
+      - signup-db
+      - message-queue
+    networks:
+      - signup-net
+
+networks:
+  signup-net:

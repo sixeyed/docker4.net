@@ -17,15 +17,19 @@ namespace SignUp.MessageHandlers.SaveProspect
         private static ManualResetEvent _ResetEvent = new ManualResetEvent(false);
 
         private const string QUEUE_GROUP = "save-handler";
+        private const string HANDLER_NAME ="SaveProspect";
 
-        private static Counter _EventCounter = Metrics.CreateCounter("SaveHandler_Events", "Event count", "host", "status");
-        private static string _Host = Environment.MachineName;
+        private static readonly Gauge _InfoGauge = 
+            Metrics.CreateGauge("app_info", "Application info", "netfx_version", "version");
 
+        private static readoly Counter _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
+        
         static void Main(string[] args)
         {
             if (Config.Current.GetValue<bool>("Metrics:Enabled"))
             {
                 StartMetricServer();
+                 _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
             }
 
             var queue = new MessageQueue(Config.Current);
@@ -45,7 +49,7 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         private static void SaveProspect(object sender, MsgHandlerEventArgs e)
         {
-            _EventCounter.Labels(_Host, "received").Inc();
+            _EventCounter.Labels(HANDLER_NAME, "received").Inc();
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
             var eventMessage = MessageHelper.FromData<ProspectSignedUpEvent>(e.Message.Data);
@@ -57,12 +61,12 @@ namespace SignUp.MessageHandlers.SaveProspect
             {
                 SaveProspect(prospect);
                 Console.WriteLine($"Prospect saved. Prospect ID: {eventMessage.Prospect.ProspectId}; event ID: {eventMessage.CorrelationId}");
-                _EventCounter.Labels(_Host, "processed").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Save prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
-                _EventCounter.Labels(_Host, "failed").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
             }
         }
 

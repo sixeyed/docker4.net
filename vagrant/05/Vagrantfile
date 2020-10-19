@@ -1,0 +1,46 @@
+Vagrant.configure("2") do |config|
+  
+  config.vm.define "linux" do |linux|
+    linux.vm.box = "bento/ubuntu-20.04"  
+    linux.vm.hostname = "linux"
+    linux.vm.network "private_network", type: "dhcp"
+
+    linux.vm.provision "shell", path: "setup.sh"
+
+    linux.vm.provider :hyperv do |v|
+      v.vmname = "linux"
+      v.maxmemory = 2000
+      v.cpus = 1
+    end
+
+    linux.vm.provider :virtualbox do |v|
+      v.name = "linux"
+      v.memory = 2000
+      v.cpus = 1
+    end
+  end
+
+  config.vm.define "windows" do |windows|
+    windows.vm.box = "kiamol/windows-2019"
+    windows.vm.hostname = "windows"
+    windows.vm.network "private_network", type: "dhcp"
+
+    windows.vm.guest = "windows"    
+    windows.vm.communicator = "winrm"
+
+    windows.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true
+
+    windows.vm.provider :hyperv do |v|
+      v.vmname = "windows"
+      v.maxmemory = 3000
+      v.cpus = 1
+    end
+    
+    windows.vm.provider :virtualbox do |v|
+      v.name = "windows"
+      v.memory = 3000
+      v.cpus = 1
+    end
+  end
+
+end

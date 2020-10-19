@@ -14,11 +14,10 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
     {
         private static ManualResetEvent _ResetEvent = new ManualResetEvent(false);
 
-        private const string QUEUE_GROUP = "index-handler";
+        private const string QUEUE_GROUP = "index-handler";        
+        private const string HANDLER_NAME ="IndexProspect";
 
-        private static Counter _EventCounter = Metrics.CreateCounter("IndexHandler_Events", "Event count", "host", "status");
-        private static string _Host = Environment.MachineName;
-
+        private static Counter _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
 
         private readonly MessageQueue _queue;
         private readonly IConfiguration _config;
@@ -53,7 +52,7 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
 
         private void IndexProspect(object sender, MsgHandlerEventArgs e)
         {
-            _EventCounter.Labels(_Host, "received").Inc();
+            _EventCounter.Labels(HANDLER_NAME, "received").Inc();
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
             var eventMessage = MessageHelper.FromData<ProspectSignedUpEvent>(e.Message.Data);
@@ -73,12 +72,12 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
             {
                 _index.CreateDocument(prospect);
                 Console.WriteLine($"Prospect indexed; event ID: {eventMessage.CorrelationId}");
-                _EventCounter.Labels(_Host, "processed").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Index prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
-                _EventCounter.Labels(_Host, "failed").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
             }
         }
         
