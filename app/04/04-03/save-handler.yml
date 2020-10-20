@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+
+  signup-save-handler:
+    image: save-handler:04-03
+    build:
+      context: ../.. 
+      dockerfile: docker/04-03-health-readiness-checks/save-handler/Dockerfile

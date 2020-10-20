@@ -34,10 +34,18 @@ ENTRYPOINT C:\LogMonitor.exe C:\ServiceMonitor.exe w3svc
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
+HEALTHCHECK --interval=5s `
+ CMD powershell -command `
+    try { `
+     $response = Invoke-WebRequest http://localhost/app/SignUp -UseBasicParsing; `
+     if ($response.StatusCode -eq 200) { return 0} `
+     else {return 1}; `
+    } catch { return 1 }
+
 COPY --from=logmonitor /LogMonitor.exe /LogMonitor.exe
 COPY --from=servicemonitor /ServiceMonitor.exe /ServiceMonitor.exe
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT} 
 
-COPY docker\04-02-logging-revisited\signup-web\Web.config ${APP_ROOT}
-COPY docker\04-02-logging-revisited\signup-web\config\*.config ${APP_ROOT}\config\
-COPY docker\04-02-logging-revisited\signup-web\LogMonitorConfig.json C:\LogMonitor\
+COPY docker\04-03-health-readiness-checks\signup-web\Web.config ${APP_ROOT}
+COPY docker\04-03-health-readiness-checks\signup-web\config\*.config ${APP_ROOT}\config\
+COPY docker\04-03-health-readiness-checks\signup-web\LogMonitorConfig.json C:\LogMonitor\

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.DatabaseCheck", "Utilities.DatabaseCheck\Utilities.DatabaseCheck.csproj", "{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.DatabaseCheck", "Utilities.DatabaseCheck\Utilities.DatabaseCheck.csproj", "{2F96F1D0-F7F4-4C56-9E6D-23D4577775DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.HttpCheck", "Utilities.HttpCheck\Utilities.HttpCheck.csproj", "{C3451E4C-C103-4B41-88C5-F13371E2444A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.HttpCheck", "Utilities.HttpCheck\Utilities.HttpCheck.csproj", "{C3451E4C-C103-4B41-88C5-F13371E2444A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.MessageQueueCheck", "Utilities.MessageQueueCheck\Utilities.MessageQueueCheck.csproj", "{F45B8D1E-3180-4790-BF8C-BCB8B6B589E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3451E4C-C103-4B41-88C5-F13371E2444A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F45B8D1E-3180-4790-BF8C-BCB8B6B589E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45B8D1E-3180-4790-BF8C-BCB8B6B589E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45B8D1E-3180-4790-BF8C-BCB8B6B589E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45B8D1E-3180-4790-BF8C-BCB8B6B589E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

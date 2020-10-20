@@ -9,23 +9,23 @@ namespace Utilties.DatabaseCheck
     {
         static int Main(string[] args)
         {
-            Console.WriteLine("DEPENDENCY: starting");
+            Console.WriteLine("DatabaseCheck: starting");
 
             var sqlPolicy = Policy.Handle<SqlException>()
                                   .Retry(3, (exception, retryCount) =>
                                   {
-                                      Console.WriteLine("DEPENDENCY: Got SQL exception {0}, retryCount {1}", exception.GetType(), retryCount);
+                                      Console.WriteLine("DatabaseCheck: Got SQL exception {0}, retryCount {1}", exception.GetType(), retryCount);
                                   });
 
             var result = sqlPolicy.ExecuteAndCapture(() => ConnectToSqlServer());
             if (result.Outcome == OutcomeType.Successful)
             {
-                Console.WriteLine("DEPENDENCY: OK");
+                Console.WriteLine("DatabaseCheck: OK");
                 return 0;
             }
             else
             {
-                Console.WriteLine("DEPENDENCY: FAILED");
+                Console.WriteLine("DatabaseCheck: FAILED");
                 return 1;
             }
         }
@@ -34,9 +34,9 @@ namespace Utilties.DatabaseCheck
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()                
                 .AddJsonFile("configs/config.json", optional: true)
                 .AddJsonFile("secrets/secret.json", optional: true)
+                .AddEnvironmentVariables()
                 .Build();
 
             var targetDatabase = config["DatabaseCheck:DatabaseName"];

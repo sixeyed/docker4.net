@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+
+  signup-web:
+    image: signup-web:04-03
+    build:
+      dockerfile: docker/04-03-health-readiness-checks/signup-web/Dockerfile

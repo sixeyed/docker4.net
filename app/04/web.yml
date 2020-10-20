@@ -5,7 +5,7 @@ services:
     image: signup-db
     build:
       context: ../..
-      dockerfile: docker/04-01-logmonitor/signup-db/Dockerfile
+      dockerfile: docker/04-02-logging-revisited/signup-db/Dockerfile
     environment:
       - sa_password=docker4.net!
     networks:
@@ -15,7 +15,7 @@ services:
     image: signup-web:04-01
     build:
       context: ../..
-      dockerfile: docker/04-01-logmonitor/signup-web/Dockerfile
+      dockerfile: docker/04-02-logging-revisited/signup-web/Dockerfile
     environment:
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api

@@ -13,9 +13,9 @@ namespace Utilities.HttpCheck
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()                
                 .AddJsonFile("configs/config.json", optional: true)
                 .AddJsonFile("secrets/secret.json", optional: true)
+                .AddEnvironmentVariables()
                 .Build();
 
             var targetUrl = config["HttpCheck:TargetUrl"];
@@ -29,7 +29,7 @@ namespace Utilities.HttpCheck
                     var stopwatch = Stopwatch.StartNew();
                     var response = await client.GetAsync(targetUrl);
                     stopwatch.Stop();
-                    Console.WriteLine($"HEALTHCHECK: status {response.StatusCode}, took {stopwatch.ElapsedMilliseconds}ms");
+                    Console.WriteLine($"HttpCheck: status {response.StatusCode}, took {stopwatch.ElapsedMilliseconds}ms");
                     if (response.StatusCode == HttpStatusCode.OK && stopwatch.ElapsedMilliseconds < timeout)
                     {
                         exitCode = 0;
@@ -38,7 +38,7 @@ namespace Utilities.HttpCheck
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"HEALTHCHECK: error. Exception {ex.Message}");
+                Console.WriteLine($"HttpCheck: error. Exception {ex.Message}");
             }
             return exitCode;
         }
