@@ -34,8 +34,12 @@ namespace SignUp.Api.ReferenceData
             }            
 
             app.UseRouting();
-            app.UseMetricServer();
-            app.UseHttpMetrics();            
+            if (Configuration.GetValue<bool>("Metrics:Server:Enabled"))
+            {
+                app.UseMetricServer();
+                app.UseHttpMetrics(); 
+            }  
+                   
             app.UseFlakiness();
 
             app.UseEndpoints(endpoints => 

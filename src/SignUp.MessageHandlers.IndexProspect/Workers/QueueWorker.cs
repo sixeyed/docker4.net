@@ -16,8 +16,7 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
 
         private const string QUEUE_GROUP = "index-handler";        
         private const string HANDLER_NAME ="IndexProspect";
-
-        private static Counter _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
+        private static Counter _EventCounter ;
 
         private readonly MessageQueue _queue;
         private readonly IConfiguration _config;
@@ -32,9 +31,10 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
 
         public void Start()
         {
-            if (_config.GetValue<bool>("Metrics:Enabled"))
+            if (_config.GetValue<bool>("Metrics:Server:Enabled"))
             {
                 StartMetricServer();
+                _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
             }            
 
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
@@ -52,7 +52,10 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
 
         private void IndexProspect(object sender, MsgHandlerEventArgs e)
         {
-            _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+            if (_EventCounter != null)
+            {
+                _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+            }
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
             var eventMessage = MessageHelper.FromData<ProspectSignedUpEvent>(e.Message.Data);
@@ -72,21 +75,23 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
             {
                 _index.CreateDocument(prospect);
                 Console.WriteLine($"Prospect indexed; event ID: {eventMessage.CorrelationId}");
-                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
+                if (_EventCounter != null)
+                {
+                    _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Index prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
-                _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
             }
         }
         
         private void StartMetricServer()
         {
-            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
+            var metricsPort = Config.Current.GetValue<int>("Metrics:Server:Port");
             var server = new MetricServer(metricsPort);
             server.Start();
-            Console.WriteLine($"Metrics server listening on port {metricsPort}");
+            Console.WriteLine($"Metrics server listening on port: {metricsPort}");
         }
     }
 }

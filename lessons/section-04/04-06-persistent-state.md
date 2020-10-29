@@ -14,3 +14,5 @@ sql - bind mount for data folder
 
 - custom startup script
 - check for db files before loading
+
+replace container with new - sql 2019?

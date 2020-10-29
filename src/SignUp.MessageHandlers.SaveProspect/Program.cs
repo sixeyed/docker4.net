@@ -19,54 +19,68 @@ namespace SignUp.MessageHandlers.SaveProspect
         private const string QUEUE_GROUP = "save-handler";
         private const string HANDLER_NAME ="SaveProspect";
 
-        private static readonly Gauge _InfoGauge = 
-            Metrics.CreateGauge("app_info", "Application info", "netfx_version", "version");
+        private static readonly Gauge _InfoGauge;
+        private static readoly Counter _EventCounter;
 
-        private static readoly Counter _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
-        
         static void Main(string[] args)
         {
-            if (Config.Current.GetValue<bool>("Metrics:Enabled"))
+            if (Config.Current.GetValue<bool>("Metrics:Server:Enabled"))
             {
                 StartMetricServer();
-                 _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
+                _InfoGauge = Metrics.CreateGauge("app_info", "Application info", "netfx_version", "version");
+                _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
+                if (Config.Current.GetValue<bool>("Metrics:Application:Enabled"))
+                {
+                    _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
+                }
             }
 
             var queue = new MessageQueue(Config.Current);
 
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
-            using (var connection = queue.CreateConnection())
+            try 
             {
-                var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);
-                subscription.MessageHandler += SaveProspect;
-                subscription.Start();
-                Console.WriteLine($"Listening on subject: {ProspectSignedUpEvent.MessageSubject}, queue: {QUEUE_GROUP}");
-
+                using (var connection = queue.CreateConnection())
+                {
+                    var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);
+                    subscription.MessageHandler += SaveProspect;
+                    subscription.Start();
+                    Console.WriteLine($"Listening on subject: {ProspectSignedUpEvent.MessageSubject}, queue: {QUEUE_GROUP}"); 
+                    _ResetEvent.WaitOne();
+                    connection.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Cannot connect to message queue. Doing nothing."); 
                 _ResetEvent.WaitOne();
-                connection.Close();
             }
         }
 
         private static void SaveProspect(object sender, MsgHandlerEventArgs e)
         {
-            _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+            if (_EventCounter != null)
+            {
+                _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+            }
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
             var eventMessage = MessageHelper.FromData<ProspectSignedUpEvent>(e.Message.Data);
             Console.WriteLine($"Saving new prospect, signed up at: {eventMessage.SignedUpAt}; event ID: {eventMessage.CorrelationId}");
 
             var prospect = eventMessage.Prospect;
-
             try
             {
                 SaveProspect(prospect);
                 Console.WriteLine($"Prospect saved. Prospect ID: {eventMessage.Prospect.ProspectId}; event ID: {eventMessage.CorrelationId}");
-                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
+                if (_EventCounter != null)
+                {
+                    _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Save prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
-                _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
             }
         }
 
@@ -85,10 +99,10 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         private static void StartMetricServer()
         {
-            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
+            var metricsPort = Config.Current.GetValue<int>("Metrics:Server:Port");
             var server = new MetricServer(metricsPort);
             server.Start();
-            Console.WriteLine($"Metrics server listening on port ${metricsPort}");
+            Console.WriteLine($"Metrics server listening on port: ${metricsPort}");
         }
     }
 }

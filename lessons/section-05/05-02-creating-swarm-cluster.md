@@ -1,6 +1,6 @@
 
 
-vagrant up
+vagrant up linux
 
 vagrant ssh linux
 

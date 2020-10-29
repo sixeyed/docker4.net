@@ -1,7 +1,8 @@
 Vagrant.configure("2") do |config|
   
   config.vm.define "linux" do |linux|
-    linux.vm.box = "bento/ubuntu-20.04"  
+    linux.vm.box = "bento/ubuntu-20.04" 
+    linux.vm.box_version = "202005.21.0" 
     linux.vm.hostname = "linux"
     linux.vm.network "private_network", type: "dhcp"
 
@@ -39,6 +40,27 @@ Vagrant.configure("2") do |config|
     windows.vm.provider :virtualbox do |v|
       v.name = "windows"
       v.memory = 3000
+      v.cpus = 1
+    end
+  end
+  
+  config.vm.define "linux2" do |linux2|
+    linux2.vm.box = "bento/ubuntu-20.04" 
+    linux2.vm.box_version = "202005.21.0" 
+    linux2.vm.hostname = "linux2"
+    linux2.vm.network "private_network", type: "dhcp"
+
+    linux2.vm.provision "shell", path: "setup.sh"
+
+    linux2.vm.provider :hyperv do |v|
+      v.vmname = "linux2"
+      v.maxmemory = 2000
+      v.cpus = 1
+    end
+
+    linux2.vm.provider :virtualbox do |v|
+      v.name = "linux2"
+      v.memory = 2000
       v.cpus = 1
     end
   end

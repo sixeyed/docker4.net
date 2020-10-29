@@ -30,6 +30,21 @@ docker logs 04_reference-data-api_1
 
 > readiness in save handler - container exits if no queue
 
+docker container stop 04_message-queue-1
+
+docker container restart 04_save-handler-1
+
+docker ps
+
+^ logs
+
+docker container restart 04_index-handler-1
+
+docker ps
+
+^ logs
+
+- TODO - check startup command
 docker\04-03-health-readiness-checks\save-handler\Dockerfile
 
 docker-compose -f app/04/web.yml -f app/04/04-03/save-handler.yml build signup-save-handler

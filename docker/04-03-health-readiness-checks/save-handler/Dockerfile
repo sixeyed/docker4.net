@@ -35,8 +35,9 @@ FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 ENV APP_ROOT=C:\save-prospect-handler
 
 WORKDIR ${APP_ROOT}
-CMD .\SignUp.MessageHandlers.SaveProspect.exe
+CMD .\Utilities.MessageQueueCheck.exe && .\SignUp.MessageHandlers.SaveProspect.exe
 
+COPY --from=utilities C:\out\ .
 COPY --from=builder C:\out\save-prospect\SaveProspectHandler .
 COPY docker\03-05-backend-async-messaging\save-handler\App.config ${APP_ROOT}\SignUp.MessageHandlers.SaveProspect.exe.config
 COPY docker\03-05-backend-async-messaging\save-handler\config\*.config ${APP_ROOT}\config\

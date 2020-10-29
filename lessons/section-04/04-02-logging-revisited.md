@@ -56,7 +56,6 @@ docker logs 04_signup-web_1 - file logs
 
 docker top 04_signup-web_1 - logmon & svcmon
 
-
 ## Logging in Console Apps
 
 ```
@@ -72,3 +71,9 @@ dotnet - docker\02-05-packaging-dotnet-apps\reference-data-api\Dockerfile
 ## Application health
 
 Logmonitor as wrapper - failure in app triggers failure , bubbles to \docker
+
+docker ps
+
+docker exec - stop-service w3c
+
+docker ps
