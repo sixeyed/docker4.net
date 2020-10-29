@@ -7,6 +7,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using prom = Prometheus;
+using Prometheus.AspNet;
 using SignUp.Core;
 using SignUp.Messaging;
 using SignUp.Model;
@@ -20,6 +22,9 @@ namespace SignUp.Web
     public class Global : HttpApplication
     {
         public static ServiceProvider ServiceProvider { get; private set; }
+        public static IHttpModule Module = new PrometheusHttpRequestModule();
+
+        private static prom.Gauge _InfoGauge;
 
         static Global()
         {
@@ -43,6 +48,17 @@ namespace SignUp.Web
             Database.SetInitializer<SignUpContext>(new StaticDataInitializer());
             EnsureDatabaseCreated();
             SignUp.PreloadStaticDataCache();
+        }
+
+        public override void Init()
+        {
+            base.Init();
+            if (Config.Current.GetValue<bool>("Metrics:Server:Enabled"))
+            {
+                Module.Init(this);
+                _InfoGauge = prom.Metrics.CreateGauge("app_info", "Application info", "netfx_version", "version");
+                _InfoGauge.Labels(AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName, "20.11").Set(1);
+            }
         }
 
         private static void EnsureDatabaseCreated()

@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+
+  signup-web:
+    image: signup-web:04-03
+    environment:
+      - Metrics:Server:Enabled=true
