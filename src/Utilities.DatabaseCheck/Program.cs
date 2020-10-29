@@ -2,6 +2,7 @@
 using Polly;
 using System;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace Utilties.DatabaseCheck
 {
@@ -33,6 +34,7 @@ namespace Utilties.DatabaseCheck
         private static void ConnectToSqlServer()
         {
             var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile("configs/config.json", optional: true)
                 .AddJsonFile("secrets/secret.json", optional: true)

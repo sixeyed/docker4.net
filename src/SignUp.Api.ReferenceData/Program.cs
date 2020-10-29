@@ -15,7 +15,7 @@ namespace SignUp.Api.ReferenceData
 
         public static void Main(string[] args)
         {
-            _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
+            _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.11").Set(1);
             CreateHostBuilder(args).Build().Run();
         }
 

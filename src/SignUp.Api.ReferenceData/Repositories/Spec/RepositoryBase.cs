@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Prometheus;
 
 namespace SignUp.Api.ReferenceData.Repositories
 {
@@ -40,27 +42,28 @@ namespace SignUp.Api.ReferenceData.Repositories
 
         public IEnumerable<T> GetAll()
         {
+            _logger.LogDebug("GetAll - executing SQL query: '{0}'", GetAllSqlQuery);
             if (_queryCounter != null)
             {
                 _queryCounter.Labels(_metricsSource, "started").Inc();
             }
-            _logger.LogDebug("GetAll - executing SQL query: '{0}'", GetAllSqlQuery);
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
                     var response = dbConnection.Query<T>(GetAllSqlQuery);
-                    if (_queryCounter != null)
-                    {
-                        _queryCounter.Labels(_metricsSource, "completed").Inc();
-                    }
                     return response;
                 }
             }
             catch(Exception ex)
             {
                 _logger.LogError("GetAll - FAILED, ex: {ex}");
+                if (_queryCounter != null)
+                {
+                    _queryCounter.Labels(_metricsSource, "failed").Inc();
+                }
+                return new List<T>();
             }
         }
     }

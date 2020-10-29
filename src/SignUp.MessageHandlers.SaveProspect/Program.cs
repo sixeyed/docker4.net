@@ -19,8 +19,8 @@ namespace SignUp.MessageHandlers.SaveProspect
         private const string QUEUE_GROUP = "save-handler";
         private const string HANDLER_NAME ="SaveProspect";
 
-        private static readonly Gauge _InfoGauge;
-        private static readoly Counter _EventCounter;
+        private static Gauge _InfoGauge;
+        private static Counter _EventCounter;
 
         static void Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace SignUp.MessageHandlers.SaveProspect
             {
                 StartMetricServer();
                 _InfoGauge = Metrics.CreateGauge("app_info", "Application info", "netfx_version", "version");
-                _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
+                _InfoGauge.Labels(AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName, "20.11").Set(1);
                 if (Config.Current.GetValue<bool>("Metrics:Application:Enabled"))
                 {
                     _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");

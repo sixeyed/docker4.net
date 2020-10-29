@@ -46,7 +46,7 @@ docker-compose -f app/04/web.yml up -d
 _Add some new data at http://localhost:8081/app/SignUp and check it makes it to the databases:_
 
 ```
-docker container exec 03_signup-db_1 powershell `
+docker container exec 04_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 
@@ -74,6 +74,10 @@ Logmonitor as wrapper - failure in app triggers failure , bubbles to \docker
 
 docker ps
 
-docker exec - stop-service w3c
+docker exec 04_signup-web_1 powershell "Stop-Service w3svc"
 
 docker ps
+
+docker ps -a
+
+docker start 04_signup-web_1

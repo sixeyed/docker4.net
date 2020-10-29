@@ -39,5 +39,5 @@ CMD .\Utilities.MessageQueueCheck.exe && .\SignUp.MessageHandlers.SaveProspect.e
 
 COPY --from=utilities C:\out\ .
 COPY --from=builder C:\out\save-prospect\SaveProspectHandler .
-COPY docker\03-05-backend-async-messaging\save-handler\App.config ${APP_ROOT}\SignUp.MessageHandlers.SaveProspect.exe.config
-COPY docker\03-05-backend-async-messaging\save-handler\config\*.config ${APP_ROOT}\config\
+COPY docker\04-03-health-readiness-checks\save-handler\App.config ${APP_ROOT}\SignUp.MessageHandlers.SaveProspect.exe.config
+COPY docker\04-03-health-readiness-checks\save-handler\config\*.config ${APP_ROOT}\config\

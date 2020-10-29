@@ -37,4 +37,4 @@ HEALTHCHECK --interval=5s CMD ["dotnet", "/app/Utilities.HttpCheck.dll"]
 
 COPY --from=utilities /out/ .
 COPY --from=builder /out/ .
-COPY ./docker/02-05-packaging-dotnet-apps/reference-data-api/appsettings.json .
+COPY ./docker/04-03-health-readiness-checks/reference-data-api/appsettings.json .

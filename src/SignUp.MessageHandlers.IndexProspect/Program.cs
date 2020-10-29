@@ -16,7 +16,7 @@ namespace SignUp.MessageHandlers.IndexProspect
 
         public static void Main(string[] args)
         {
-            _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.09").Set(1);
+            _InfoGauge.Labels(RuntimeInformation.FrameworkDescription, "20.11").Set(1);
             
             var serviceProvider = new ServiceCollection()
                 .AddSingleton(Config.Current)
