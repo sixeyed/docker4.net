@@ -31,7 +31,7 @@ namespace SignUp.MessageHandlers.SaveProspect
                 _InfoGauge.Labels(AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName, "20.11").Set(1);
                 if (Config.Current.GetValue<bool>("Metrics:Application:Enabled"))
                 {
-                    _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
+                    _EventCounter = Metrics.CreateCounter("message_handler_events", "Event count", "handler", "status");
                 }
             }
 
@@ -61,7 +61,7 @@ namespace SignUp.MessageHandlers.SaveProspect
         {
             if (_EventCounter != null)
             {
-                _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
             }
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
@@ -73,14 +73,14 @@ namespace SignUp.MessageHandlers.SaveProspect
             {
                 SaveProspect(prospect);
                 Console.WriteLine($"Prospect saved. Prospect ID: {eventMessage.Prospect.ProspectId}; event ID: {eventMessage.CorrelationId}");
-                if (_EventCounter != null)
-                {
-                    _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Save prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
+                if (_EventCounter != null)
+                {
+                    _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
+                }
             }
         }
 
@@ -102,7 +102,7 @@ namespace SignUp.MessageHandlers.SaveProspect
             var metricsPort = Config.Current.GetValue<int>("Metrics:Server:Port");
             var server = new MetricServer(metricsPort);
             server.Start();
-            Console.WriteLine($"Metrics server listening on port: ${metricsPort}");
+            Console.WriteLine($"Metrics server listening on port: {metricsPort}");
         }
     }
 }

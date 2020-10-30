@@ -34,7 +34,10 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
             if (_config.GetValue<bool>("Metrics:Server:Enabled"))
             {
                 StartMetricServer();
-                _EventCounter = Metrics.CreateCounter("MessageHandler_Events", "Event count", "handler", "status");
+                if (Config.Current.GetValue<bool>("Metrics:Application:Enabled"))
+                {
+                    _EventCounter = Metrics.CreateCounter("message_handler_events", "Event count", "handler", "status");
+                }
             }            
 
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
@@ -54,7 +57,7 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
         {
             if (_EventCounter != null)
             {
-                _EventCounter.Labels(HANDLER_NAME, "received").Inc();
+                _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
             }
 
             Console.WriteLine($"Received message, subject: {e.Message.Subject}");
@@ -75,14 +78,14 @@ namespace SignUp.MessageHandlers.IndexProspect.Workers
             {
                 _index.CreateDocument(prospect);
                 Console.WriteLine($"Prospect indexed; event ID: {eventMessage.CorrelationId}");
-                if (_EventCounter != null)
-                {
-                    _EventCounter.Labels(HANDLER_NAME, "processed").Inc();
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Index prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
+                if (_EventCounter != null)
+                {
+                    _EventCounter.Labels(HANDLER_NAME, "failed").Inc();
+                }
             }
         }
         

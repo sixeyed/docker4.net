@@ -18,4 +18,5 @@ FROM mcr.microsoft.com/dotnet/core/runtime:3.1
 WORKDIR /index-prospect-handler
 ENTRYPOINT ["dotnet", "SignUp.MessageHandlers.IndexProspect.dll"]
 
+USER ContainerAdministrator
 COPY --from=builder /out/ .

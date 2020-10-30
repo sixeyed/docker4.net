@@ -1,11 +1,16 @@
 version: "3.8"
 
 services:
+
   signup-index-handler:
     image: index-handler
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
+    ports:
+      - "8091:80"
     depends_on:
       - elasticsearch
-      - message-queue
     networks:
       - signup-net
 

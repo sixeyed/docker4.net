@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+
+  reference-data-api:
+    image: reference-data-api:04-03
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true

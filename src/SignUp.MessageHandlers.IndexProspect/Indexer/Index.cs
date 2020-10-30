@@ -1,3 +1,4 @@
+using Elasticsearch.Net;
 using Microsoft.Extensions.Configuration;
 using Nest;
 using SignUp.MessageHandlers.IndexProspect.Documents;
@@ -18,18 +19,22 @@ namespace SignUp.MessageHandlers.IndexProspect.Indexer
         private void EnsureIndex()
         {            
             Console.WriteLine($"Initializing Elasticsearch. url: {_config["Elasticsearch:Url"]}");
-            GetClient().CreateIndex("prospects");
+            var client = GetClient();
         }
 
         public void CreateDocument(Prospect prospect)
         {
-            GetClient().Index(prospect, idx => idx.Index("prospects"));
+            GetClient().IndexDocument(prospect);
         }
 
         private ElasticClient GetClient()
         {
             var uri = new Uri(_config["Elasticsearch:Url"]);
-            return new ElasticClient(uri);
+            var settings = new ConnectionSettings(uri)
+                                .DefaultIndex("prospects")
+                                .ThrowExceptions();
+
+            return new ElasticClient(settings);
         }
     }
 }

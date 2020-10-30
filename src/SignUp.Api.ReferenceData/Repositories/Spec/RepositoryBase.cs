@@ -45,7 +45,7 @@ namespace SignUp.Api.ReferenceData.Repositories
             _logger.LogDebug("GetAll - executing SQL query: '{0}'", GetAllSqlQuery);
             if (_queryCounter != null)
             {
-                _queryCounter.Labels(_metricsSource, "started").Inc();
+                _queryCounter.Labels(_metricsSource, "processed").Inc();
             }
             try
             {

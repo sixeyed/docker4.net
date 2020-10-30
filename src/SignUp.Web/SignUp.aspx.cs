@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using prom = Prometheus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -15,6 +17,17 @@ namespace SignUp.Web
     {
         private static Dictionary<string, Country> _Countries = new Dictionary<string, Country>();
         private static Dictionary<string, Role> _Roles = new Dictionary<string, Role>();
+        private static prom.Counter _DataLoadCounter;
+        private static prom.Counter _ProspectSaveCounter;
+
+        static SignUp()
+        {
+            if (Config.Current.GetValue<bool>("Metrics:Application:Enabled"))
+            {
+                _DataLoadCounter = prom.Metrics.CreateCounter("reference_data_load", "Reference data loads", "loader");
+                _ProspectSaveCounter = prom.Metrics.CreateCounter("prospect_saves", "Prospects saved", "handler");
+            }
+        }
 
         public static void PreloadStaticDataCache()
         {
@@ -39,6 +52,10 @@ namespace SignUp.Web
             }
 
             Log.Info("Loaded reference data cache");
+            if (_DataLoadCounter != null)
+            {                
+                _DataLoadCounter.Labels(loaderType).Inc();
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -85,6 +102,11 @@ namespace SignUp.Web
             handler.SaveProspect(prospect);
 
             Log.Info($"Saved new prospect, email address: {prospect.EmailAddress}");
+            if (_ProspectSaveCounter != null)
+            {                
+                _ProspectSaveCounter.Labels(handlerType).Inc();
+            }
+
             Server.Transfer("ThankYou.aspx");
         }
     }

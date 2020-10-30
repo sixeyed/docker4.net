@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Nest;
+using System;
 
 namespace SignUp.MessageHandlers.IndexProspect.Documents
 {
+    [ElasticsearchType(IdProperty = nameof(FullName))]
     public class Prospect
     {
         public string FullName { get; set; }
