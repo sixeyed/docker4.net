@@ -37,14 +37,21 @@ else {
 Write-Verbose "Initializing SignUp database"
 
 # attach or create database: 
-$mdfPath = "$($env:DATA_FOLDER)\SignUp_Primary.mdf"
-$ldfPath = "$($env:DATA_FOLDER)\SignUp_Primary.ldf"
-
-$sqlcmd = "CREATE DATABASE SignUp ON (FILENAME = N'$mdfPath')"
-$sqlcmd =  "$sqlcmd, (FILENAME = N'$ldfPath')"
+$mdfPath = "$($env:DATA_FOLDER)\SignUp.mdf"
+$ldfPath = "$($env:DATA_FOLDER)\SignUp.ldf"
+$sqlcmd = 'CREATE DATABASE SignUp'
 
 if ((Test-Path $mdfPath) -eq $true) {
-    $sqlcmd = "$sqlcmd FOR ATTACH;"
+    $sqlcmd = "$sqlcmd ON (FILENAME = N'$mdfPath')"
+    $sqlcmd = "$sqlcmd LOG ON (FILENAME = N'$ldfPath')"    
+    $sqlcmd = "$sqlcmd FOR ATTACH"
+    Write-Verbose "Attaching existing data files from path: $env:DATA_FOLDER"
+}
+else {
+    mkdir -p $env:DATA_FOLDER
+    $sqlcmd = "$sqlcmd ON (NAME = SignUp_dat, FILENAME = N'$mdfPath')"
+    $sqlcmd = "$sqlcmd LOG ON (NAME = SignUp_log, FILENAME = N'$ldfPath')"
+    Write-Verbose "Creating database with data file path: $env:DATA_FOLDER"
 }
 
 Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd) -ServerInstance '.\SQLEXPRESS'"

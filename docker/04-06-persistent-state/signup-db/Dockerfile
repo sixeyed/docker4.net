@@ -14,10 +14,8 @@ FROM dak4dotnet/sql-server:2017
 ENV SA_PASSWORD="docker4.net!" \
     DATA_FOLDER="C:\\data"
 
-VOLUME ${DATA_FOLDER}
-
 COPY --from=logmonitor /LogMonitor.exe /LogMonitor.exe
 COPY --from=servicemonitor /ServiceMonitor.exe /ServiceMonitor.exe
 
-COPY docker/04-02-logging-revisited/signup-db/start.ps1 /
-COPY docker/04-02-logging-revisited/signup-db/LogMonitorConfig.json /LogMonitor/
+COPY docker/04-06-persistent-state/signup-db/start.ps1 /
+COPY docker/04-06-persistent-state/signup-db/LogMonitorConfig.json /LogMonitor/

@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+
+  signup-web:
+    image: signup-web:04-06
+    build:
+      dockerfile: docker/04-06-persistent-state/signup-web/Dockerfile
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
+    volumes:
+      - type: bind
+        source: .\04-06\signup-web-config
+        target: C:\web-app\config
+      - type: volume
+        source: signup-web-logs
+        target: C:\other-logs
+    
+volumes:
+  signup-web-logs:

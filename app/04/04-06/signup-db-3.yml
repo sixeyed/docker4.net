@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+
+  signup-db:
+    image: signup-db:04-06
+    build:
+      dockerfile: docker/04-06-persistent-state/signup-db/Dockerfile
+    volumes:
+      - type: bind
+        source: C:\databases
+        target: C:\data
+    ports:
+      - 1433:1433
