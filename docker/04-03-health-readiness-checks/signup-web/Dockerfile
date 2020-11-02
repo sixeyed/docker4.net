@@ -28,9 +28,12 @@ RUN msbuild SignUp.Web\SignUp.Web.csproj /p:OutputPath=c:\out /p:Configuration=R
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
-ENV APP_ROOT=C:\web-app
+ENV APP_ROOT=C:\web-app `
+    LOGS_ROOT=C:\logs
+
 ENTRYPOINT C:\LogMonitor.exe C:\ServiceMonitor.exe w3svc
 
+WORKDIR ${LOGS_ROOT}
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
