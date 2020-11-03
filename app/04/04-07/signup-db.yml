@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+
+  signup-db:
+    image: signup-db:04-07
+    build:
+      dockerfile: docker/04-07-persistent-databases/signup-db/Dockerfile

@@ -17,5 +17,5 @@ ENV SA_PASSWORD="docker4.net!" \
 COPY --from=logmonitor /LogMonitor.exe /LogMonitor.exe
 COPY --from=servicemonitor /ServiceMonitor.exe /ServiceMonitor.exe
 
-COPY docker/04-06-persistent-state/signup-db/start.ps1 /
-COPY docker/04-06-persistent-state/signup-db/LogMonitorConfig.json /LogMonitor/
+COPY docker/04-07-persistent-databases/signup-db/start.ps1 /
+COPY docker/04-07-persistent-databases/signup-db/LogMonitorConfig.json /LogMonitor/
