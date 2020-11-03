@@ -17,6 +17,8 @@ The application spec in [save-handler.yml](../../app/04/04-04/save-handler.yml) 
 _Run the handler and check the metrics endpoint:_
 
 ```
+cd $env:docker4dotnet
+
 docker-compose -f app/04/web.yml -f app/04/04-04/save-handler.yml up -d signup-save-handler
 
 docker logs 04_signup-save-handler_1
