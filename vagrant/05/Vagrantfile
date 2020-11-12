@@ -1,68 +1,74 @@
 Vagrant.configure("2") do |config|
   
-  config.vm.define "linux" do |linux|
-    linux.vm.box = "bento/ubuntu-20.04" 
-    linux.vm.box_version = "202005.21.0" 
-    linux.vm.hostname = "linux"
-    linux.vm.network "private_network", type: "dhcp"
-
-    linux.vm.provision "shell", path: "setup.sh"
-
-    linux.vm.provider :hyperv do |v|
-      v.vmname = "linux"
-      v.maxmemory = 2000
+  config.vm.define "manager" do |manager|
+    manager.vm.box = "bento/ubuntu-20.04" 
+    manager.vm.hostname = "manager"
+    manager.vm.network "private_network", type: "dhcp"
+    manager.vm.provision "shell", path: "setup.sh"
+    manager.vm.synced_folder "../..", "/docker4dotnet"
+    manager.vm.provider :hyperv do |v|
+      v.vmname = "manager"
+      v.maxmemory = 1500
       v.cpus = 1
     end
-
-    linux.vm.provider :virtualbox do |v|
-      v.name = "linux"
-      v.memory = 2000
+    manager.vm.provider :virtualbox do |v|
+      v.name = "manager"
+      v.memory = 1500
       v.cpus = 1
     end
   end
 
-  config.vm.define "windows" do |windows|
-    windows.vm.box = "kiamol/windows-2019"
-    windows.vm.hostname = "windows"
-    windows.vm.network "private_network", type: "dhcp"
-
-    windows.vm.guest = "windows"    
-    windows.vm.communicator = "winrm"
-
-    windows.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true
-
-    windows.vm.provider :hyperv do |v|
-      v.vmname = "windows"
-      v.maxmemory = 3000
+  config.vm.define "worker" do |worker|
+    worker.vm.box = "bento/ubuntu-20.04" 
+    worker.vm.hostname = "worker"
+    worker.vm.network "private_network", type: "dhcp"
+    worker.vm.provision "shell", path: "setup.sh"
+    worker.vm.provider :hyperv do |v|
+      v.vmname = "worker"
+      v.maxmemory = 1500
       v.cpus = 1
     end
-    
-    windows.vm.provider :virtualbox do |v|
-      v.name = "windows"
-      v.memory = 3000
+    worker.vm.provider :virtualbox do |v|
+      v.name = "worker"
+      v.memory = 1500
+      v.cpus = 1
+    end
+  end
+
+  config.vm.define "worker2" do |worker2|
+    worker2.vm.box = "bento/ubuntu-20.04" 
+    worker2.vm.hostname = "worker2"
+    worker2.vm.network "private_network", type: "dhcp"
+    worker2.vm.provision "shell", path: "setup.sh"
+    worker2.vm.provider :hyperv do |v|
+      v.vmname = "worker2"
+      v.maxmemory = 1500
+      v.cpus = 1
+    end
+    worker2.vm.provider :virtualbox do |v|
+      v.name = "worker2"
+      v.memory = 1500
+      v.cpus = 1
+    end
+  end
+
+  config.vm.define "winworker" do |winworker|
+    winworker.vm.box = "kiamol/windows-2019"
+    winworker.vm.hostname = "winworker"
+    winworker.vm.network "private_network", type: "dhcp"
+    winworker.vm.guest = "windows"    
+    winworker.vm.communicator = "winrm"
+    winworker.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true
+    winworker.vm.provider :hyperv do |v|
+      v.vmname = "winworker"
+      v.maxmemory = 4000
+      v.cpus = 1
+    end    
+    winworker.vm.provider :virtualbox do |v|
+      v.name = "winworker"
+      v.memory = 4000
       v.cpus = 1
     end
   end
   
-  config.vm.define "linux2" do |linux2|
-    linux2.vm.box = "bento/ubuntu-20.04" 
-    linux2.vm.box_version = "202005.21.0" 
-    linux2.vm.hostname = "linux2"
-    linux2.vm.network "private_network", type: "dhcp"
-
-    linux2.vm.provision "shell", path: "setup.sh"
-
-    linux2.vm.provider :hyperv do |v|
-      v.vmname = "linux2"
-      v.maxmemory = 2000
-      v.cpus = 1
-    end
-
-    linux2.vm.provider :virtualbox do |v|
-      v.name = "linux2"
-      v.memory = 2000
-      v.cpus = 1
-    end
-  end
-
 end

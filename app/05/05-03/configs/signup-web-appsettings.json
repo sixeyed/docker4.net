@@ -1,0 +1,9 @@
+﻿{
+  "Dependencies": {
+    "IReferenceDataLoader": "SignUp.Web.ReferenceData.ApiReferenceDataLoader",
+    "IProspectSaveHandler": "SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler"
+  },
+  "ReferenceDataApi": {
+    "Url": "http://reference-data-api/api"
+  }
+}

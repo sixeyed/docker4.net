@@ -1,0 +1,135 @@
+version: "3.8"
+
+services:
+  signup-db:
+    image: docker4dotnet/signup-db:05-03
+    networks:
+      - signup-net
+    environment:
+      - SA_PASSWORD_PATH=C:\db\config\sa-password.txt
+    secrets:
+      - source: signup-db-password
+        target: C:\db\config\sa-password.txt
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == windows"
+
+  signup-web:
+    image: docker4dotnet/signup-web:05-03
+    networks:
+      - signup-net
+      - frontend-net
+      - backend-net
+    configs:
+      - source: signup-web-appsettings
+        target: C:\web-app\configs\config.json
+      - source: signup-web-log4net
+        target: C:\web-app\config\log4net.config
+    secrets:
+      - source: signup-web-connectionstrings
+        target: C:\web-app\config\connectionStrings.config
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == windows"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.web.rule=PathPrefix(`/app/`)"
+        - "traefik.http.services.signup-web.loadbalancer.server.port=80"
+
+  homepage:
+    image: docker4dotnet/homepage:05-03
+    networks:
+      - frontend-net
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == windows"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.homepage.rule=PathPrefix(`/`)"
+        - "traefik.http.services.homepage.loadbalancer.server.port=80"
+
+  save-handler:
+    image: docker4dotnet/save-handler:05-03    
+    networks:
+      - signup-net
+      - backend-net
+    secrets:
+      - source: save-handler-connectionstrings
+        target: C:\save-prospect-handler\config\connectionStrings.config
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == windows"
+
+  reference-data-api:
+    image: docker4dotnet/reference-data-api:05-03
+    networks:
+      - signup-net
+      - frontend-net
+    configs:
+      - source: reference-data-config
+        target: /app/configs/config.json
+    secrets:
+      - source: reference-data-secret
+        target: /app/secrets/secret.json
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=PathPrefix(`/api/`)"
+        - "traefik.http.services.reference-data-api.loadbalancer.server.port=80"
+
+  index-handler:
+    image: docker4dotnet/index-handler:05-03
+    networks:
+      - backend-net
+      - analytics-net
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+
+networks:
+  signup-net:
+    external: true
+    name: signup-net
+
+  frontend-net:
+    external: true
+    name: frontend-net
+
+  backend-net:
+    external: true
+    name: backend-net
+
+  analytics-net:
+    external: true
+    name: analytics-net
+
+configs:
+  signup-web-appsettings:
+    external: true
+
+  signup-web-log4net:
+    external: true
+  
+  reference-data-config:
+    external: true
+
+secrets:
+  signup-db-password:
+    external: true
+  
+  signup-web-connectionstrings:
+    external: true
+  
+  save-handler-connectionstrings:
+    external: true
+  
+  reference-data-secret:
+    external: true

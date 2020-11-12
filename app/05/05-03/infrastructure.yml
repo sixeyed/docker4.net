@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+
+  proxy:
+    image: traefik:v2.3
+    command:
+      - "--providers.docker"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=frontend-net"
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true"
+    ports:
+      - "8080:80"
+      - "8088:8080"
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    networks:
+      - frontend-net
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+          - "node.role == manager"
+
+  message-queue:
+    image: nats:2.1
+    networks:
+      - backend-net
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+
+networks:
+  frontend-net:
+    external: true
+    name: frontend-net
+
+  backend-net:
+    external: true
+    name: backend-net

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+
+  reference-data-api:
+    image: docker4dotnet/reference-data-api:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/reference-data-api/Dockerfile
+
+  signup-index-handler:
+    image: docker4dotnet/index-handler:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/index-handler/Dockerfile

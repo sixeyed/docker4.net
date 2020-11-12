@@ -16,3 +16,12 @@ services:
     image: docker4dotnet/ubuntu
     build:
       context: linux/ubuntu
+
+  whoami:
+    image: docker4dotnet/whoami:linux-amd64
+    build:
+      context: multi-arch/whoami
+      args:
+        SDK_TAG: 3.1-alpine
+        ASPNET_TAG: 3.1-alpine
+

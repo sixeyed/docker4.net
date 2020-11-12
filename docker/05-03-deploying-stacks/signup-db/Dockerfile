@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/windows/nanoserver:1809 AS servicemonitor
 ARG SERVICEMONITOR_VERSION="2.0.1.10"
 ADD https://dotnetbinaries.blob.core.windows.net/servicemonitor/${SERVICEMONITOR_VERSION}/ServiceMonitor.exe .
 
-# sql server
+# sql server - the base image is built for Windows Server 2019
 FROM docker4dotnet/sql-server:2017
 
 ENV SA_PASSWORD="docker4.net!" \

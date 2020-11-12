@@ -21,7 +21,7 @@ cd $env:docker4dotnet
 docker image build -t signup-web:02-04 `
   -f ./docker/02-04-multi-container-apps/signup-web/Dockerfile .
 
-docker run --rm --entrypoint powershell dak4dotnet/signup-web:v4 cat /web-app/connectionStrings.config
+docker run --rm --entrypoint powershell signup-web:02-04 cat /web-app/connectionStrings.config
 ```
 
 ## Create a custom network for the app

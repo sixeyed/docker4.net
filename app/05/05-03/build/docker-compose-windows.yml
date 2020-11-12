@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+
+  signup-db:
+    image: docker4dotnet/signup-db:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/signup-db/Dockerfile
+
+  signup-web:
+    image: docker4dotnet/signup-web:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/signup-web/Dockerfile
+      
+  signup-save-handler:
+    image: docker4dotnet/save-handler:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/save-handler/Dockerfile
+
+  homepage:
+    image: docker4dotnet/homepage:05-03
+    build:
+      context: ../../../..
+      dockerfile: docker/05-03-deploying-stacks/homepage/Dockerfile

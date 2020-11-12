@@ -9,7 +9,7 @@ ARG SERVICEMONITOR_VERSION="2.0.1.10"
 ADD https://dotnetbinaries.blob.core.windows.net/servicemonitor/${SERVICEMONITOR_VERSION}/ServiceMonitor.exe .
 
 # sql server
-FROM dak4dotnet/sql-server:2017
+FROM docker4dotnet/sql-server:2017
 
 ENV SA_PASSWORD="docker4.net!"
 
