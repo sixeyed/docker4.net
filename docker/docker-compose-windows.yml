@@ -29,3 +29,8 @@ services:
       args:
         SDK_TAG: 3.1-nanoserver-1809
         ASPNET_TAG: 3.1-nanoserver-1809
+
+  fluentd:
+    image: docker4dotnet/fluentd:windows-amd64
+    build:
+      context: multi-arch/fluentd/windows

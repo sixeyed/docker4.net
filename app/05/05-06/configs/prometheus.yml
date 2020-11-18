@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+
+  - job_name: 'swarm-tasks'
+    dockerswarm_sd_configs:
+      - host: unix:///var/run/docker.sock 
+        role: tasks
+    relabel_configs:    
+      - source_labels: 
+        - __meta_dockerswarm_service_label_prometheus_scrape
+        regex: true
+        action: keep
+      - source_labels: 
+        - __meta_dockerswarm_service_label_prometheus_path
+        target_label:  __metrics_path__
+      - source_labels: 
+          - __address__
+          - __meta_dockerswarm_service_label_prometheus_port
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - source_labels: 
+          - __meta_dockerswarm_service_name
+        target_label: job
+      - source_labels: 
+        -  __meta_dockerswarm_task_slot
+        target_label: instance

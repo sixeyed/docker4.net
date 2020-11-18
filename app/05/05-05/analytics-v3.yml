@@ -29,7 +29,12 @@ services:
     networks:
       - backend-net
       - analytics-net
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.index-handler.{{.ImageName}}"
     deploy:
+      replicas: 3
       placement:
         constraints:
           - "node.platform.os == linux"

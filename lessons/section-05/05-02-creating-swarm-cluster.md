@@ -32,7 +32,9 @@ exit
 ```
 vagrant ssh worker
 
-docker swarm join [join-token]
+ip a
+
+docker swarm join [join-token] --advertise-addr [ip address]
 
 docker info
 
@@ -44,7 +46,9 @@ exit
 ```
 vagrant ssh winworker
 
-docker swarm join [join-token]
+ipconfig
+
+docker swarm join [join-token] --advertise-addr [ip address]
 
 docker info
 

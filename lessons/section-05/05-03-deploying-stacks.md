@@ -1,26 +1,7 @@
 
 vagrant ssh manager 
 
-
-## Shared components - analytics
-
-
-app\05\05-03\analytics.yml
-
-
-```
-docker network create -d overlay analytics-net
-
-docker network inspect analytics-net
-```
-
-```
 cd /docker4dotnet
-
-docker stack deploy -c app/05/05-03/analytics.yml analytics
-
-docker stack ps analytics
-```
 
 ## Shared components - infrastructure
 
@@ -87,6 +68,8 @@ docker stack deploy -c app/05/05-03/signup.yml signup
 docker stack ps signup
 
 docker stack ps signup  -f "desired-state=running"
+
+docker service logs signup_save-handler
 ```
 
 > Use app at [ip]:8080
@@ -97,6 +80,28 @@ docker stack ps signup  -f "desired-state=running"
 docker service logs signup_signup-web
 
 docker service logs signup_save-handler
-
-docker service logs signup_index-handler
 ```
+
+
+## Analytics
+
+app\05\05-03\analytics.yml
+
+
+```
+docker network create -d overlay analytics-net
+
+docker stack deploy -c app/05/05-03/analytics.yml analytics
+
+docker stack ps analytics
+```
+
+> Use app at [ip]:8080
+
+```
+docker service logs signup_save-handler
+
+docker service logs analytics_index-handler
+```
+
+> Check at [ip]:5601

@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.19.2
+    ports:
+      - "9090:9090"
+    command: --config.file=/config/prometheus.yml
+    configs:
+      - source: prometheus-config
+        target: /config/prometheus.yml
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - signup-net
+
+  grafana:
+    image: grafana/grafana:6.7.4
+    ports:
+      - "3000:3000"
+    environment:
+      GF_USERS_DEFAULT_THEME: light
+    configs:
+      - source: grafana-datasources
+        target: /etc/grafana/provisioning/datasources/datasources.yaml
+      - source: grafana-providers
+        target: /etc/grafana/provisioning/datasources/providers.yaml
+      - source: signup-dashboard
+        target: /var/lib/grafana/dashboards/signup.json
+    networks:
+      - signup-net
+
+configs:
+  grafana-datasources:
+    external: true
+
+  grafana-providers:
+    external: true
+
+  signup-dashboard:
+    external: true
+
+networks:
+  signup-net:
+    external:
+      name: signup-net

@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  fluentd:
+    image: docker4dotnet/fluentd
+    environment:
+      FLUENTD_CONF: fluentd-signup.conf
+    ports:
+      - "24224:24224"      
+      - "24224:24224/udp"
+    configs:
+      - source: fluentd-signup
+        target: /fluentd/etc/fluentd-signup.conf
+    networks:
+      - analytics-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+
+configs:
+  fluentd-signup:
+    external: true
+
+networks:
+  analytics-net:
+    external: true
+    name: analytics-net

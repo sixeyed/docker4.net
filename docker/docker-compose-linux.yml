@@ -25,3 +25,8 @@ services:
         SDK_TAG: 3.1-alpine
         ASPNET_TAG: 3.1-alpine
 
+  fluentd:
+    image: docker4dotnet/fluentd:linux-amd64
+    build:
+      context: multi-arch/fluentd/linux
+

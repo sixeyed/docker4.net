@@ -21,6 +21,9 @@ services:
       - signup-net
       - frontend-net
       - backend-net
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
     configs:
       - source: signup-web-appsettings
         target: C:\web-app\configs\config.json
@@ -29,7 +32,20 @@ services:
     secrets:
       - source: signup-web-connectionstrings
         target: C:\web-app\config\connectionStrings.config
+    healthcheck: 
+      interval: 10s
+      retries: 2
+      start_period: 40s
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.web.{{.ImageName}}"
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == windows"
@@ -37,6 +53,10 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.web.rule=PathPrefix(`/app/`)"
         - "traefik.http.services.signup-web.loadbalancer.server.port=80"
+        - "traefik.http.services.signup-web.loadbalancer.sticky.cookie=true"
+        - "prometheus-scrape=true"
+        - "prometheus-path=/app/Metrics.ashx"
+        - "prometheus-port=80"
 
   homepage:
     image: docker4dotnet/homepage:05-03
@@ -56,26 +76,53 @@ services:
     networks:
       - signup-net
       - backend-net
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
     secrets:
       - source: save-handler-connectionstrings
         target: C:\save-prospect-handler\config\connectionStrings.config
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.save-handler.{{.ImageName}}"
     deploy:
       placement:
         constraints:
           - "node.platform.os == windows"
+      labels:
+        - "prometheus-scrape=true"
+        - "prometheus-path=/metrics"
+        - "prometheus-port=80"
 
   reference-data-api:
     image: docker4dotnet/reference-data-api:05-03
     networks:
       - signup-net
       - frontend-net
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
     configs:
       - source: reference-data-config
         target: /app/configs/config.json
     secrets:
       - source: reference-data-secret
         target: /app/secrets/secret.json
+    healthcheck: 
+      interval: 15s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.reference-data-api.{{.ImageName}}"
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == linux"
@@ -83,6 +130,31 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.api.rule=PathPrefix(`/api/`)"
         - "traefik.http.services.reference-data-api.loadbalancer.server.port=80"
+        - "prometheus-scrape=true"
+        - "prometheus-path=/metrics"
+        - "prometheus-port=80"
+
+  index-handler:
+    image: docker4dotnet/index-handler:05-03
+    networks:
+      - backend-net
+      - analytics-net
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.index-handler.{{.ImageName}}"
+    deploy:
+      replicas: 3
+      placement:
+        constraints:
+          - "node.platform.os == linux"
+      labels:
+        - "prometheus-scrape=true"
+        - "prometheus-path=/metrics"
+        - "prometheus-port=80"
 
 networks:
   signup-net:
@@ -96,6 +168,10 @@ networks:
   backend-net:
     external: true
     name: backend-net
+
+  analytics-net:
+    external: true
+    name: analytics-net
 
 configs:
   signup-web-appsettings:

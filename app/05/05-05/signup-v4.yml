@@ -21,6 +21,7 @@ services:
       - signup-net
       - frontend-net
       - backend-net
+      - analytics-net
     configs:
       - source: signup-web-appsettings
         target: C:\web-app\configs\config.json
@@ -29,7 +30,20 @@ services:
     secrets:
       - source: signup-web-connectionstrings
         target: C:\web-app\config\connectionStrings.config
+    healthcheck: 
+      interval: 10s
+      retries: 2
+      start_period: 40s
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.web.{{.ImageName}}"
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == windows"
@@ -37,6 +51,7 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.web.rule=PathPrefix(`/app/`)"
         - "traefik.http.services.signup-web.loadbalancer.server.port=80"
+        - "traefik.http.services.signup-web.loadbalancer.sticky.cookie=true"
 
   homepage:
     image: docker4dotnet/homepage:05-03
@@ -56,9 +71,14 @@ services:
     networks:
       - signup-net
       - backend-net
+      - analytics-net
     secrets:
       - source: save-handler-connectionstrings
         target: C:\save-prospect-handler\config\connectionStrings.config
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.save-handler.{{.ImageName}}"
     deploy:
       placement:
         constraints:
@@ -69,13 +89,27 @@ services:
     networks:
       - signup-net
       - frontend-net
+      - analytics-net
     configs:
       - source: reference-data-config
         target: /app/configs/config.json
     secrets:
       - source: reference-data-secret
         target: /app/secrets/secret.json
+    healthcheck: 
+      interval: 15s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "fluentd"
+      options:
+        tag: "signup.reference-data-api.{{.ImageName}}"
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == linux"
@@ -96,6 +130,10 @@ networks:
   backend-net:
     external: true
     name: backend-net
+    
+  analytics-net:
+    external: true
+    name: analytics-net
 
 configs:
   signup-web-appsettings:

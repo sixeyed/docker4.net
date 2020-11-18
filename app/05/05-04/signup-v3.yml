@@ -29,7 +29,16 @@ services:
     secrets:
       - source: signup-web-connectionstrings
         target: C:\web-app\config\connectionStrings.config
+    healthcheck: 
+      interval: 10s
+      retries: 2
+      start_period: 40s
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == windows"
@@ -37,6 +46,7 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.web.rule=PathPrefix(`/app/`)"
         - "traefik.http.services.signup-web.loadbalancer.server.port=80"
+        - "traefik.http.services.signup-web.loadbalancer.sticky.cookie=true"
 
   homepage:
     image: docker4dotnet/homepage:05-03
@@ -75,7 +85,16 @@ services:
     secrets:
       - source: reference-data-secret
         target: /app/secrets/secret.json
+    healthcheck: 
+      interval: 15s
+      retries: 3
+      start_period: 15s
     deploy:
+      replicas: 2
+      update_config:
+        order: start-first
+        monitor: 10s
+        failure_action: rollback
       placement:
         constraints:
           - "node.platform.os == linux"
