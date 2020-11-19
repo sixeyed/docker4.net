@@ -5,6 +5,7 @@ Vagrant.configure("2") do |config|
     manager.vm.hostname = "manager"
     manager.vm.network "private_network", type: "dhcp"
     manager.vm.provision "shell", path: "setup.sh"
+    manager.vm.provision "shell", path: "pull-images.sh"
     manager.vm.synced_folder "../..", "/docker4dotnet"
     manager.vm.provider :hyperv do |v|
       v.vmname = "manager"
@@ -23,6 +24,7 @@ Vagrant.configure("2") do |config|
     worker.vm.hostname = "worker"
     worker.vm.network "private_network", type: "dhcp"
     worker.vm.provision "shell", path: "setup.sh"
+    worker.vm.provision "shell", path: "pull-images.sh"
     worker.vm.provider :hyperv do |v|
       v.vmname = "worker"
       v.maxmemory = 1500
@@ -40,6 +42,7 @@ Vagrant.configure("2") do |config|
     worker2.vm.hostname = "worker2"
     worker2.vm.network "private_network", type: "dhcp"
     worker2.vm.provision "shell", path: "setup.sh"
+    worker2.vm.provision "shell", path: "pull-images.sh"
     worker2.vm.provider :hyperv do |v|
       v.vmname = "worker2"
       v.maxmemory = 1500
@@ -58,7 +61,8 @@ Vagrant.configure("2") do |config|
     winworker.vm.network "private_network", type: "dhcp"
     winworker.vm.guest = "windows"    
     winworker.vm.communicator = "winrm"
-    winworker.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true
+    winworker.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true 
+    winworker.vm.provision "shell", path: "pull-images.ps1"
     winworker.vm.provider :hyperv do |v|
       v.vmname = "winworker"
       v.maxmemory = 4000
