@@ -29,6 +29,9 @@ services:
     networks:
       - backend-net
       - analytics-net
+    environment:
+      - Metrics:Server:Enabled=true
+      - Metrics:Application:Enabled=true
     logging:
       driver: "fluentd"
       options:
@@ -38,6 +41,10 @@ services:
       placement:
         constraints:
           - "node.platform.os == linux"
+      labels:
+        - "prometheus-scrape=true"
+        - "prometheus-path=/metrics"
+        - "prometheus-port=80"
 
 networks:
   analytics-net:

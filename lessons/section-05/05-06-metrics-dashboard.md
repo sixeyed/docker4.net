@@ -17,12 +17,35 @@ docker config create grafana-providers app/05/05-06/configs/grafana-providers.ya
 docker config create signup-dashboard app/05/05-06/configs/signup-dashboard.json
 ```
 
-docker stack deploy
+docker stack deploy -c app/05/05-06/metrics.yaml metrics
 
-localhost:9090
+docker stack ps metrics
 
-- app info, query metrics
+ip:9090 - service discovery & targets
 
-localhost:3000
+```
+docker stack deploy -c app/05/05-06/analytics-v4.yml analytics
+
+docker stack ps analytics -f "desired-state=running"
+```
+
+ip:9090 - service discovery
+
+/graph
+- app info
+- process_cpu_seconds_total
+
+```
+docker stack deploy -c app/05/05-06/signup-v6.yml signup
+
+docker stack ps signup -f "desired-state=running"
+```
+
+ip:9090 - service discovery
+
+- app info
+- process_cpu_seconds_total
+
+ip:3000
 
 - dashboard

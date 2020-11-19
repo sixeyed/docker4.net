@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   prometheus:
-    image: prom/prometheus:v2.19.2
+    image: prom/prometheus:v2.21.0
     ports:
       - "9090:9090"
     command: --config.file=/config/prometheus.yml
@@ -16,9 +16,12 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - "node.platform.os == linux"
+          - "node.role == manager"
     networks:
+      - backend-net
       - signup-net
+      - analytics-net
 
   grafana:
     image: grafana/grafana:6.7.4
@@ -30,13 +33,20 @@ services:
       - source: grafana-datasources
         target: /etc/grafana/provisioning/datasources/datasources.yaml
       - source: grafana-providers
-        target: /etc/grafana/provisioning/datasources/providers.yaml
+        target: /etc/grafana/provisioning/dashboards/providers.yaml
       - source: signup-dashboard
         target: /var/lib/grafana/dashboards/signup.json
     networks:
-      - signup-net
+      - backend-net
+    deploy:
+      placement:
+        constraints:
+          - "node.platform.os == linux"
 
 configs:
+  prometheus-config:
+    external: true
+
   grafana-datasources:
     external: true
 
@@ -47,6 +57,14 @@ configs:
     external: true
 
 networks:
+  backend-net:
+    external: true
+    name: backend-net
+
+  analytics-net:
+    external: true
+    name: analytics-net
+
   signup-net:
-    external:
-      name: signup-net
+    external: true
+    name: signup-net

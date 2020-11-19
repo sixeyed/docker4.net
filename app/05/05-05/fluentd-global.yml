@@ -21,6 +21,9 @@ services:
       - analytics-net
     deploy:
       mode: global
+      placement:
+        constraints:
+          - "node.platform.os == linux"
 
 configs:
   fluentd-signup:
