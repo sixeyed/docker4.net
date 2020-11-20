@@ -6,15 +6,21 @@ services:
     environment:
       FLUENTD_CONF: fluentd-signup.conf
     ports:
-      - "24224:24224"      
-      - "24224:24224/udp"
+      - target: 24224
+        published: 24224
+        protocol: tcp
+        mode: host
+      - target: 24224
+        published: 24224
+        protocol: udp
+        mode: host
     configs:
       - source: fluentd-signup
         target: /fluentd/etc/fluentd-signup.conf
     networks:
       - analytics-net
     deploy:
-      replicas: 1
+      mode: global
       placement:
         constraints:
           - "node.platform.os == linux"

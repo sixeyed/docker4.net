@@ -36,7 +36,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: 172.17.175.52:24224
+        fluentd-address: "[MANAGER_IP]:24224"
         tag: "signup.web.{{.ImageName}}"
     deploy:
       replicas: 2
@@ -77,7 +77,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: 172.17.175.52:24224
+        fluentd-address: "[MANAGER_IP]:24224"
         tag: "signup.save-handler.{{.ImageName}}"
     deploy:
       placement:
