@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+
+  fortio-web:
+    image: fortio/fortio:1.6.8
+    command: load -c 32 -qps 25 -t 60s http://signup-web/app/SignUp
+    networks:
+      - frontend-net
+
+  fortio-api:
+    image: fortio/fortio:1.6.8
+    command: load -c 10 -qps 5 -t 30s http://reference-data-api/api/roles
+    networks:
+      - frontend-net
+
+networks:
+  frontend-net:
+    external: true
+    name: frontend-net

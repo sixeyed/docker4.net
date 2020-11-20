@@ -2,7 +2,7 @@
 
 We've prepared our Docker images so that the application logs get surfaced as container logs. Now we have lots of containers running we can take advantage of Docker's pluggable logging framework to collect all those logs and store them in a centralized database.
 
-The EFK stack is a popular choice for Docker and Kubernetes clusters: [Elasticsearch]() is a no-SQL database used to store and index the log entries; [Fluentd]() collects all the container logs and stores them in Elasticsearch; and [Kibana]() is a web front-end to Elasticsearch.
+The EFK stack is a popular choice for Docker and Kubernetes clusters: [Elasticsearch](https://www.elastic.co/elasticsearch/) is a no-SQL database used to store and index the log entries; [Fluentd](https://www.fluentd.org) collects all the container logs and stores them in Elasticsearch; and [Kibana](https://www.elastic.co/kibana/) is a web front-end to Elasticsearch.
 
 We'll run all those components in containers, to centralize the application logs from the .NET containers.
 
