@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
     winworker.vm.guest = "windows"    
     winworker.vm.communicator = "winrm"
     winworker.vm.provision "shell", path: "setup.ps1", powershell_elevated_interactive: true, reboot: true 
-    winworker.vm.provision "shell", path: "pull-images.ps1"
+    winworker.vm.provision "shell", path: "pull-images.ps1", powershell_elevated_interactive: true
     winworker.vm.provider :hyperv do |v|
       v.vmname = "winworker"
       v.maxmemory = 4000
