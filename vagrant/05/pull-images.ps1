@@ -1,4 +1,6 @@
 
+start-service docker 
+
 $images = 
 'docker4dotnet/whoami',
 'docker4dotnet/signup-db:05-03',

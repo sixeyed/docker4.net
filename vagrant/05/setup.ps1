@@ -1,7 +1,4 @@
 
-# set the machine name properly
-Rename-Computer winworker
-
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 Remove-WindowsFeature Windows-Defender
