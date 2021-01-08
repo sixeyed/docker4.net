@@ -30,7 +30,7 @@ docker logs 04_signup-save-handler_1
 
 The Prometheus client library can be integrated with the ASP.NET Core processing pipeline. It records HTTP request processing times for every controller.
 
-It's configured in the reference datat API using the familiar ASP.NET services pattern. The code is all in [Startup.cs](../../src/SignUp.Api.ReferenceData/Startup.cs).
+It's configured in the reference data API using the familiar ASP.NET services pattern. The code is all in [Startup.cs](../../src/SignUp.Api.ReferenceData/Startup.cs).
 
 The Compose override [reference-data-api.yml](../../app/04/04-04/reference-data-api.yml) turns metrics on, providing statistics for the ASP.NET runtime.
 
