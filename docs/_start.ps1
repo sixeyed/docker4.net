@@ -1,0 +1,1 @@
+docker run -p 4000:4000 -v "$(pwd):/srv/jekyll" -it --entrypoint sh jekyll/jekyll:pages

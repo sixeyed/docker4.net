@@ -10,3 +10,7 @@ Rubik by [Hubert and Fischer, Meir Sadan, Cyreal on Google Fonts](https://fonts.
 ## Icons
 
 Artwork by [Open Container Initiative](https://github.com/opencontainers/artwork).
+
+## Themese
+
+Site theme [volny/creative-theme-jekyll](https://github.com/volny/creative-theme-jekyll).
