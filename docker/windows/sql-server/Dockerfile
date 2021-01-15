@@ -1,11 +1,12 @@
 #escape=`
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+ARG WINVER=ltsc2019
+FROM mcr.microsoft.com/windows/servercore:$WINVER
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 ARG DOWNLOAD_URL="https://go.microsoft.com/fwlink/?linkid=829176"
 
-ENV SA_PASSWORD="_" `
-    SA_PASSWORD_PATH="C:\ProgramData\Docker\secrets\sa-password"
+ENV sa_password="_" `
+    sa_password_path="C:\ProgramData\Docker\secrets\sa-password"
 
 RUN Invoke-WebRequest -Uri $env:DOWNLOAD_URL -OutFile sqlexpress.exe; `
     Start-Process -Wait -FilePath .\sqlexpress.exe -ArgumentList /qs, /x:setup ; `

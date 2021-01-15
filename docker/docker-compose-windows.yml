@@ -17,11 +17,6 @@ services:
     build:
       context: windows/servercore
 
-  sql-server:
-    image: docker4dotnet/sql-server:2017
-    build:
-      context: windows/sql-server
-
   whoami:
     image: docker4dotnet/whoami:windows-amd64
     build:
