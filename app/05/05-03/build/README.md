@@ -2,7 +2,7 @@
 Builds all the latest versions of the images for lesson 05-02.
 
 ```
-cd "$env:docker4dotnet/app/05/05-02/build"
+cd "$env:docker4dotnet/app/05/05-03/build"
 ```
 
 In Linux container mode:

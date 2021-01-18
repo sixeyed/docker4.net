@@ -1,15 +1,15 @@
-name: Linux image build
+name: Linux section 05 image build
 
 on:
   push:
     paths:
-      - "docker/linux/**"
+      - "app/05/05-03/**"
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 4 * * *"
   workflow_dispatch:
 
 jobs:
-  build-base:
+  section-05:
     runs-on: ubuntu-18.04
     steps:
       - name: Registry login
@@ -20,8 +20,8 @@ jobs:
 
       - uses: actions/checkout@master
 
-      - name: Build and push Linux base images
-        working-directory: docker
+      - name: Build and push section 05 app images
+        working-directory: app/05/05-03/build
         run: |
           docker-compose -f docker-compose-linux.yml build 
           docker-compose -f docker-compose-linux.yml push

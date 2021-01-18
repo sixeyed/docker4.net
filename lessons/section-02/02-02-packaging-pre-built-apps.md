@@ -39,7 +39,7 @@ _Run a container from the image:_
 docker run -d -p 8080:80 --name web signup-web:02-01
 ```
 
-> Browse to the app at http://localhost:8080/signup
+> Browse to the app at http://localhost:8080/signup - after a minute or so you'll see an error message
 
 
 ## Debug the problem

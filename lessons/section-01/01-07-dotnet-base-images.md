@@ -116,7 +116,7 @@ _List the images to see their sizes:_
 docker image ls mcr.microsoft.com/dotnet/core/*:3.1
 ```
 
-> Each image is about 100MB bigger than it's Linux counterpart.
+> Each image is about 100MB bigger than its Linux counterpart.
 
 
 

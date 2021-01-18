@@ -7,8 +7,7 @@ FROM mcr.microsoft.com/windows/nanoserver:1809 AS servicemonitor
 ARG SERVICEMONITOR_VERSION="2.0.1.10"
 ADD https://dotnetbinaries.blob.core.windows.net/servicemonitor/${SERVICEMONITOR_VERSION}/ServiceMonitor.exe .
 
-# build - pin to the pre-.NET 5 SDK
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-20201013-windowsservercore-ltsc2019 AS builder
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS builder
 
 WORKDIR C:\src
 COPY src\SignUp.Web.sln .
@@ -25,7 +24,7 @@ COPY src C:\src
 RUN msbuild SignUp.Web\SignUp.Web.csproj /p:OutputPath=c:\out /p:Configuration=Release
 
 # app image
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 ENV APP_ROOT=C:\web-app `

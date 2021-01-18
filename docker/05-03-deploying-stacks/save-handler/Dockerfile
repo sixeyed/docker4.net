@@ -12,8 +12,7 @@ RUN dotnet restore
 COPY src /src
 RUN dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release -o /out Utilities.MessageQueueCheck.csproj
 
-# build - pin to the pre-.NET 5 SDK
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-20201013-windowsservercore-ltsc2019 AS builder
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS builder
 
 WORKDIR C:\src
 COPY src\SignUp.sln .
@@ -30,7 +29,7 @@ COPY src C:\src
 RUN msbuild SignUp.MessageHandlers.SaveProspect\SignUp.MessageHandlers.SaveProspect.csproj /p:OutputPath=c:\out\save-prospect\SaveProspectHandler
 
 # app image
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.8-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 
 ENV APP_ROOT=C:\save-prospect-handler
 
