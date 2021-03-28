@@ -83,7 +83,7 @@ _Switch to Windows container mode, set up networking and run the containers:_
 ```
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
-$env:HOST_IP=$(((Get-NetIPConfiguration | Where-Object {$_.IPv4DefaultGateway -ne $null}).IPv4Address.IPAddress)[0])
+$env:HOST_IP=(Get-NetIPConfiguration | Where-Object {$_.IPv4DefaultGateway -ne $null})[0].IPv4Address.IPAddress
 
 echo $env:HOST_IP
 
