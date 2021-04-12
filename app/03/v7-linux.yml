@@ -13,6 +13,8 @@ services:
     build:
       context: ../.. 
       dockerfile: docker/03-06-backend-analytics/index-handler/Dockerfile
+      args:
+        APP_USER: root
     depends_on:
       - elasticsearch
       - message-queue

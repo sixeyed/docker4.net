@@ -14,9 +14,10 @@ RUN dotnet publish -c Release -o /out SignUp.MessageHandlers.IndexProspect.cspro
 
 # app image
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+ARG APP_USER=ContainerAdministrator
 
 WORKDIR /index-prospect-handler
 ENTRYPOINT ["dotnet", "SignUp.MessageHandlers.IndexProspect.dll"]
 
-USER ContainerAdministrator
+USER $APP_USER
 COPY --from=builder /out/ .
