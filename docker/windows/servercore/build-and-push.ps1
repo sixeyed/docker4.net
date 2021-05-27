@@ -4,7 +4,7 @@
 # needs to be built manually on Windows 10 as GHA doesn't have hyper-v isolation
 
 $image='docker4dotnet/servercore'
-$versions='ltsc2019','1903','1909','2004'
+$versions='ltsc2019','1903','1909','2004','20H2'
 
 foreach($version in $versions) {
 
@@ -18,6 +18,7 @@ docker manifest create --amend $image `
  "$($image):$($versions[0])" `
  "$($image):$($versions[1])" `
  "$($image):$($versions[2])" `
- "$($image):$($versions[3])"
+ "$($image):$($versions[3])" `
+ "$($image):$($versions[4])"
  
 docker manifest push $image
