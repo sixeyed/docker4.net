@@ -5,7 +5,7 @@ on:
     paths:
       - "app/05/05-03/**"
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 4 * * 6"
   workflow_dispatch:
 
 jobs:
