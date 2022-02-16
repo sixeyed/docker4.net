@@ -29,7 +29,7 @@ COPY src C:\src
 RUN msbuild SignUp.MessageHandlers.SaveProspect\SignUp.MessageHandlers.SaveProspect.csproj /p:OutputPath=c:\out\save-prospect\SaveProspectHandler
 
 # app image
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
+FROM mcr.microsoft.com/dotnet/framework/runtime:4.8-windowsservercore-ltsc2019
 
 ENV APP_ROOT=C:\save-prospect-handler
 

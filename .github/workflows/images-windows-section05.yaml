@@ -1,20 +1,20 @@
-name: Windows image build
+name: Windows section 05 image build
 
 on:
   push:
     paths:
-      - "docker/windows/**"
+      - "app/05/05-03/**"
   schedule:
-    - cron: "0 2 * * 6"
+    - cron: "0 3 * * 6"
   workflow_dispatch:
 
 jobs:
-  build-base:
+  section-05:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@master
-      - name: Build and push Windows base images
-        working-directory: docker
+      - name: Build and push section 05 Windows images
+        working-directory: app/05/05-03/build
         run: |
           docker login -u $env:USER -p $env:TOKEN
           docker-compose -f docker-compose-windows.yml build 
